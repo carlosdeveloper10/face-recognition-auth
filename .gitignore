@@ -1,0 +1,8 @@
+..gitignore.swp
+.mvn/
+.project
+.settings/
+mvnw
+mvnw.cmd
+target/
+.classpath
