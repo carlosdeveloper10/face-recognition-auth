@@ -8,7 +8,7 @@ pipeline {
 		stage('Show agent machine info and status') {
 			steps {
 			    sh 'echo list of enviromet variables'
-			    sh 'ENV'
+			    sh 'env'
 			    
 			    sh 'echo agent machine attributes'
 			    sh 'lscpu'
