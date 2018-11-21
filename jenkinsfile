@@ -1,0 +1,13 @@
+pipeline {
+    agent {
+        label: 'linux-mint'
+    }
+
+	stages {
+	    stage('Run unit test') {
+    	   steps {
+    	   		sh 'mvn test'
+   	    	}
+    	}
+	}
+}
