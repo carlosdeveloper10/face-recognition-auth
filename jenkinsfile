@@ -3,7 +3,21 @@ pipeline {
         label 'linux-mint'
     }
 
+
 	stages {
+		stage('Show agent machine info and status') {
+			steps {
+			    sh 'echo list of enviromet variables'
+			    sh 'ENV'
+			    
+			    sh 'echo agent machine attributes'
+			    sh 'lscpu'
+			    sh 'free -h'
+			    sh 'dmesg | head -1'
+			}
+		   
+		}
+
 	    stage('Run unit test') {
     	   steps {
     	   		sh 'mvn test'

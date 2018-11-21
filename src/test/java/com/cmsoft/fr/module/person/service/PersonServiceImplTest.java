@@ -49,6 +49,7 @@ public class PersonServiceImplTest {
 
 		Person personToSave = new Person();
 		personToSave.setUsername("carlos123");
+		personToSave.setPhotoName("aaa");
 		when(personDao.findByUsername("carlos123")).thenReturn(personToSave);
 
 		assertThatThrownBy(() -> {
@@ -78,8 +79,6 @@ public class PersonServiceImplTest {
 
 	@Test
 	public void whenUsernameDoesNotExistInDbThenReturnFalse() {
-
-		when(personDao.findByUsername("juan123")).thenReturn(null);
 
 		boolean existUser = personService.existUsername("carlos123");
 		assertThat(existUser).isFalse();
