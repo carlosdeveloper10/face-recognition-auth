@@ -3,7 +3,7 @@ package com.cmsoft.fr.module.person.data.entity;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
-import com.cmsoft.fr.module.base.Entity;
+import com.cmsoft.fr.module.base.data.entity.Entity;
 
 @javax.persistence.Entity
 @Table(name = "person")
