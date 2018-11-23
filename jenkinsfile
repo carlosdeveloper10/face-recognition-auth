@@ -28,7 +28,7 @@ pipeline {
 		    steps {
 			withSonarQubeEnv('sonarServer') {
 			
-				sh '/opt/jenkins/ci-tools/sonarqube-scanner/bin/sonar-scanner'
+				sh '/opt/jenkins/ci-tools/sonarqube-scanner/bin/sonar-scanner -Dsonar.projectKey=fra -Dsonar.sources=src -Dsonar.branch.name=${BRANCH_NAME}'
 			    
 			}
 		    }
