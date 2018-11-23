@@ -31,15 +31,15 @@ pipeline {
 				sh '/opt/jenkins/ci-tools/sonarqube-scanner/bin/sonar-scanner -Dsonar.projectKey=fra -Dsonar.sources=src -Dsonar.java.binaries=target/classes'
 			    
 			}
+			
+			def qualitygate = waitForQualityGate()
+			      if (qualitygate.status != "OK") {
+				 error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
+			      }
 		    }
 		}
 		
-			stage("SonarQube Quality Gate") {
-		    steps {
-		      timeout(time: 1, unit: 'HOURS') {
-			waitForQualityGate abortPipeline: true
-		      }
-		    }
+			
           }
 	
 	}
