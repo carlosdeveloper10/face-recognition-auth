@@ -45,9 +45,7 @@ public class PersonServiceImpl implements PersonService {
 			throw new EntityExistsException("The person already exist in database");
 
 		Person savedPerson = personDao.save(person);
-		PersonDto savedPersonDto = (PersonDto) dtoFactory.create(savedPerson);
-
-		return savedPersonDto;
+		return (PersonDto) dtoFactory.create(savedPerson);
 	}
 
 	@Override
