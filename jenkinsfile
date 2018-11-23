@@ -28,7 +28,7 @@ pipeline {
 		    steps {
 			withSonarQubeEnv('sonarServer') {
 			
-				sh '${scannerHome}/bin/sonar-scanner'
+				sh '/opt/jenkins/ci-tools/sonarqube-scanner/bin'
 			    
 			}
 		    }
