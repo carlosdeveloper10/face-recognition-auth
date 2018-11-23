@@ -23,6 +23,16 @@ pipeline {
     	   		sh 'mvn test'
    	    	}
     	}
+	
+	stage('build && SonarQube analysis') {
+		    steps {
+			withSonarQubeEnv('sonarServer') {
+			
+				sh '${scannerHome}/bin/sonar-scanner'
+			    
+			}
+		    }
+		}
 	}
 	
 	post {
