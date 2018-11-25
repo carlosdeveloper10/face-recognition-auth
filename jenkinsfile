@@ -27,7 +27,7 @@ pipeline {
 		stage('SonarQube analysis') {
 			steps {
 				withSonarQubeEnv('sonarServer') {
-					sh '/opt/jenkins/ci-tools/sonarqube-scanner/bin/sonar-scanner -Dsonar.projectKey=fra -Dsonar.sources=src -Dsonar.java.binaries=target/classes'
+					sh '/opt/jenkins/ci-tools/sonarqube-scanner/bin/sonar-scanner -Dsonar.projectKey=fra -Dsonar.sources=src -Dsonar.java.binaries=target/classes -Dsonar.jacoco.reportPaths=target/jacoco.exec'
 				}
 			script {
 				def qualitygate = waitForQualityGate()
