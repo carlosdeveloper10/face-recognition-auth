@@ -51,10 +51,7 @@ pipeline {
 		}
 		
 		stage('Deploy on stgae'){
-		    when {
-                branch 'master' || 'develop' || 'release/*'
-            }
-            steps {
+		    steps {
                sh 'mvn package' 
             }
             stages{
