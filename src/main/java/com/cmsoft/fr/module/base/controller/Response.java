@@ -19,11 +19,6 @@ public class Response<T extends Serializable> implements Serializable {
 	public Response() {
 	}
 
-	public Response(T object, String message, int httpStatusCode) {
-		this.object = object;
-		this.message = message;
-		this.httpStatusCode = httpStatusCode;
-	}
 
 	@JsonIgnore
 	public HttpStatus getHttpStatus() {

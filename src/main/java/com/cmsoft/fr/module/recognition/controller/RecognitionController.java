@@ -16,15 +16,14 @@ import com.cmsoft.fr.module.base.controller.Response;
 @RestController("/recognition")
 public class RecognitionController {
 
-	@GetMapping()
-	private ResponseEntity lookForAMatch() {
-
-		Response response = new Response<>();
-
-		response.setHttpStatusCode(200);
-		response.setMessage("Ok");
-		response.setObject(new DetentionDto());
-
-		return new ResponseEntity(response, response.getHttpStatus());
-	}
+	/*
+	 * @GetMapping() private ResponseEntity lookForAMatch() {
+	 * 
+	 * Response response = new Response<>();
+	 * 
+	 * response.setHttpStatusCode(200); response.setMessage("Ok");
+	 * response.setObject(null);
+	 * 
+	 * return new ResponseEntity(response, response.getHttpStatus()); }
+	 */
 }

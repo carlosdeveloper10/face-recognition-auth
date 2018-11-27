@@ -1,6 +1,7 @@
 package com.cmsoft.fr.module.base.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -32,6 +33,14 @@ public class EntityFactoryImplTest {
 		Entity createdPersonEntity = entityFactory.create(personDtoToPass);
 
 		assertThat(expectedPersonEntity).isEqualToComparingFieldByField(createdPersonEntity);
+	}
+
+	@Test
+	public void whenDtoIsNullTheThrownNullPointerException() {
+		EntityFactory entityFactory = new EntityFactoryImpl();
+		assertThatThrownBy(() -> {
+			entityFactory.create(null);
+		}).isExactlyInstanceOf(NullPointerException.class).hasMessage("dto can not be null");
 	}
 
 }
