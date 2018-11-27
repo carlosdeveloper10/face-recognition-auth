@@ -60,6 +60,7 @@ pipeline {
                        branch 'develop'
                    }
 					steps{
+						sh 'mvn package' 
 					    sh 'eb deploy FaceRecognitionAuthDev-env'
 					}
                 }
@@ -68,6 +69,7 @@ pipeline {
                        branch 'release/*'
                    }
 					steps{
+						sh 'mvn package' 
 						sh 'eb deploy FaceRecognitionAuthDev-qa'
 					}
                 }
@@ -76,6 +78,7 @@ pipeline {
                        branch 'master'
                    }
 				   steps{
+				   		sh 'mvn package' 
 					    sh 'eb deploy FaceRecognitionAuthDev-pro'
 				   }
                 }
