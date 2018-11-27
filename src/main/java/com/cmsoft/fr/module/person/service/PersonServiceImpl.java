@@ -3,18 +3,20 @@ package com.cmsoft.fr.module.person.service;
 import javax.persistence.EntityExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cmsoft.fr.module.base.service.DtoFactory;
 import com.cmsoft.fr.module.base.service.EntityFactory;
 import com.cmsoft.fr.module.person.data.dao.PersonDao;
 import com.cmsoft.fr.module.person.data.entity.Person;
 
+@Service
 public class PersonServiceImpl implements PersonService {
 
 	private PersonDao personDao;
 	private DtoFactory dtoFactory;
 	private EntityFactory entityFactory;
-
+	
 	public PersonServiceImpl() {
 	}
 

@@ -1,11 +1,13 @@
 package com.cmsoft.fr.module.base.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import com.cmsoft.fr.module.base.data.entity.Entity;
 import com.cmsoft.fr.module.person.data.entity.Person;
 import com.cmsoft.fr.module.person.service.PersonDto;
 
+@Component
 public class DtoFactoryImpl implements DtoFactory {
 
 	private ModelMapper mapper;
@@ -18,7 +20,6 @@ public class DtoFactoryImpl implements DtoFactory {
 		mapper = new ModelMapper();
 		Class<?> dtoClassType = getRelacionatedDtoClass(entity);
 		return (Dto) mapper.map(entity, dtoClassType);
-
 	}
 
 	private Class<?> getRelacionatedDtoClass(Entity entity) {

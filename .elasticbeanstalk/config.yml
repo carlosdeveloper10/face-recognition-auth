@@ -1,0 +1,20 @@
+branch-defaults:
+  default: FaceRecognitionAuthDev-env
+  feature/SAVE_PERSON_API:
+    environment: FaceRecognitionAuthDev-env
+deploy:
+  artifact: target/face-recognition.jar
+global:
+  application_name: face-recognition-auth-dev
+  branch: null
+  default_ec2_keyname: null
+  default_platform: Java 8
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  repository: null
+  sc: git
+  workspace_type: Application

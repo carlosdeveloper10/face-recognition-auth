@@ -1,11 +1,13 @@
 package com.cmsoft.fr.module.base.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import com.cmsoft.fr.module.base.data.entity.Entity;
 import com.cmsoft.fr.module.person.data.entity.Person;
 import com.cmsoft.fr.module.person.service.PersonDto;
 
+@Component
 public class EntityFactoryImpl implements EntityFactory {
 
 	@Override

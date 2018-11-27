@@ -3,6 +3,9 @@ pipeline {
         label 'linux-mint'
     }
 
+	environment {
+        AGENT_PATH = '/opt/jenkins'
+    }
 
 	stages {
 		stage('Show agent machine info and status') {
@@ -17,17 +20,24 @@ pipeline {
 			}
 		   
 		}
+		
+		stage('Prepare to work'){
+			//The agent is provider by agent machine to avoid put the application.yml on GIT
+		    sh 'cp  ${AGENT_PATH}/fra/application.yml ${WORKSPACE}/src/main/resources'
+		}
 
-	    stage('Run unit test') {
+
+	    stage('Unit test') {
     	   steps {
     	   		sh 'mvn test'
+    	   		junit 'target/surefire-reports/TEST-*xml'
    	    	}
     	}
 	
 		stage('SonarQube analysis') {
 			steps {
 				withSonarQubeEnv('sonarServer') {
-					sh '/opt/jenkins/ci-tools/sonarqube-scanner/bin/sonar-scanner -Dsonar.projectKey=fra -Dsonar.sources=src/main -Dsonar.tests=src/test -Dsonar.java.binaries=target/classes -Dsonar.jacoco.reportPaths=target/jacoco.exec'
+					sh '${AGENT_PATH}/ci-tools/sonarqube-scanner/bin/sonar-scanner -Dsonar.projectKey=fra -Dsonar.sources=src/main -Dsonar.tests=src/test -Dsonar.java.binaries=target/classes -Dsonar.jacoco.reportPaths=target/jacoco.exec'
 				}
 			script {
 				def qualitygate = waitForQualityGate()
@@ -37,12 +47,40 @@ pipeline {
 				}
 		    }
 		}
-	}
-	
-	
-	post {
-	    always {
-    	    junit 'target/surefire-reports/TEST-*xml'
-    	}
+		
+		stage('Deploy on stgae'){
+		    when {
+                branch 'master' || 'develop' || 'release/*'
+            }
+            steps {
+               sh 'mvn package' 
+            }
+            stages{
+                stage('Dev') {
+                   when {
+                       branch 'develop'
+                   }
+					steps{
+					    sh 'eb deploy FaceRecognitionAuthDev-env'
+					}
+                }
+                stage('Qa') {
+                   when {
+                       branch 'release/*'
+                   }
+					steps{
+						sh 'eb deploy FaceRecognitionAuthDev-qa'
+					}
+                }
+                stage('Qa') {
+                   when {
+                       branch 'master'
+                   }
+				   steps{
+					    sh 'eb deploy FaceRecognitionAuthDev-pro'
+				   }
+                }
+            }
+		}
 	}
 }

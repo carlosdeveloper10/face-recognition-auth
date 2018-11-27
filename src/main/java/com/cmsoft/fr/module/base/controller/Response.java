@@ -2,6 +2,8 @@ package com.cmsoft.fr.module.base.controller;
 
 import java.io.Serializable;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Response<T extends Serializable> implements Serializable {
