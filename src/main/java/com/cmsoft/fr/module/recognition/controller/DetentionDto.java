@@ -13,6 +13,4 @@ public class DetentionDto implements Serializable{
 	public void setConfidence(double confidence) {
 		this.confidence = confidence;
 	}
-	
-	
 }

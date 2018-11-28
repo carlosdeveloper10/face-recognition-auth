@@ -35,7 +35,20 @@ pipeline {
     	   		junit 'target/surefire-reports/TEST-*xml'
    	    	}
     	}
-
+	
+<<<<<<< HEAD
+		stage('build && SonarQube analysis') {
+		    steps {
+			withSonarQubeEnv('sonarServer') {
+			
+				sh '${scannerHome}/bin/sonar-scanner'
+			    
+			}
+		    }
+		}
+	
+	
+=======
 		stage('SonarQube analysis') {
 			steps {
 				withSonarQubeEnv('sonarServer') {
@@ -81,5 +94,6 @@ pipeline {
                 }
             }
 		}
+>>>>>>> feature/SAVE_PERSON_API
 	}
 }

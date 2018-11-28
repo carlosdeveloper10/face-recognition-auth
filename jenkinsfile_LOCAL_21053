@@ -1,0 +1,25 @@
+pipeline {
+    agent {
+        label 'linux-mint'
+    }
+
+	stages {
+	    stage('Run unit test') {
+    	   steps {
+    	   		sh 'mvn test'
+   	    	}
+    	}
+	
+		stage('build && SonarQube analysis') {
+		    steps {
+			withSonarQubeEnv('sonarServer') {
+			
+				sh '${scannerHome}/bin/sonar-scanner'
+			    
+			}
+		    }
+		}
+	
+	
+	}
+}
