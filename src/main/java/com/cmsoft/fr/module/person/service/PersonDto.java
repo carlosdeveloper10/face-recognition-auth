@@ -7,6 +7,8 @@ public class PersonDto extends Dto {
 	private String username;
 	
 	private String photoName;
+	
+	private String base64Photo;
 
 	public String getUsername() {
 		return username;
@@ -23,4 +25,14 @@ public class PersonDto extends Dto {
 	public void setPhotoName(String photoName) {
 		this.photoName = photoName;
 	}
+
+	public String getBase64Photo() {
+		return base64Photo;
+	}
+
+	public void setBase64Photo(String base64Photo) {
+		this.base64Photo = base64Photo;
+	}
+
+	
 }

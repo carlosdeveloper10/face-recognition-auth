@@ -29,7 +29,7 @@ public class EntityFactoryImpl implements EntityFactory {
 			return Person.class;
 		}
 
-		throw new EntityClassNotFoundException("It was not posible to find the dto associted to");
+		throw new EntityClassNotFoundException("It was not posible to find the dto associted to entity.");
 	}
 
 }

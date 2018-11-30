@@ -43,4 +43,14 @@ public class EntityFactoryImplTest {
 		}).isExactlyInstanceOf(NullPointerException.class).hasMessage("dto can not be null");
 	}
 
+	@Test
+	public void whenDtoIsUknowForFactoryThenThrownEntityClassNotFoundException() {
+		
+		EntityFactory entityFactory = new EntityFactoryImpl();
+		
+		Dto UknownDto = new Dto() {};
+		assertThatThrownBy(() -> {
+			entityFactory.create(UknownDto);
+		}).isExactlyInstanceOf(EntityClassNotFoundException.class).hasMessage("It was not posible to find the dto associted to entity.");
+	}
 }

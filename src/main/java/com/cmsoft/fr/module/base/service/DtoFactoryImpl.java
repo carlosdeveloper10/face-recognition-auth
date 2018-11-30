@@ -28,7 +28,7 @@ public class DtoFactoryImpl implements DtoFactory {
 			return PersonDto.class;
 		}
 
-		throw new DtoNotFoundException("It was not posible to find the dto associted to");
+		throw new DtoNotFoundException("It was not posible to find the dto associted to entity.");
 	}
 
 }

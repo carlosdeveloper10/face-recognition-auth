@@ -61,7 +61,7 @@ public class PersonServiceImplTest {
 
 		PersonDto personToSave = new PersonDto();
 		personToSave.setUsername("carlos123");
-		personToSave.setPhotoName("aaa");
+		personToSave.setBase64Photo("data:image/jpeg;base64,hdkasjdfajgdfkugewuirakjdafgkfdgjdf");
 
 		Person person = new Person();
 
@@ -76,9 +76,10 @@ public class PersonServiceImplTest {
 	public void whenPersonUsernameDoesNotExistThenSaveThePersonAndReturnTheSavePerson() {
 		PersonDto personDtoToSave = new PersonDto();
 		personDtoToSave.setUsername("carlos_mario");
-		personDtoToSave.setPhotoName("photo123.png");
+		personDtoToSave.setBase64Photo("data:image/jpeg;base64,hdkasjdfajgdfkugewuirakjdafgkfdgjdf");
 
 		PersonDto exceptedSavedPersonDto = personDtoToSave;
+		exceptedSavedPersonDto.setPhotoName("carlos_mario.jpeg");
 
 		EntityFactory entityFactoryy = new EntityFactoryImpl();
 		Person personReturnedByDao = (Person) entityFactoryy.create(personDtoToSave);

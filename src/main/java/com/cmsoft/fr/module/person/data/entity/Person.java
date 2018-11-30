@@ -14,6 +14,9 @@ public class Person extends Entity{
 	
 	@Column(name = "photo_name", nullable = false, unique = true)
 	private String photoName;
+	
+	@Column(name = "base64_photo", nullable = false)
+	private String base64Photo;
 
 	public String getUsername() {
 		return username;
@@ -30,4 +33,14 @@ public class Person extends Entity{
 	public void setPhotoName(String photoName) {
 		this.photoName = photoName;
 	}
+
+	public String getBase64Photo() {
+		return base64Photo;
+	}
+
+	public void setBase64Photo(String base64Photo) {
+		this.base64Photo = base64Photo;
+	}
+
+	
 }

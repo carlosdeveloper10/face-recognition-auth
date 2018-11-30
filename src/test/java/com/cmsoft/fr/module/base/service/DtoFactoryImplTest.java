@@ -47,4 +47,16 @@ public class DtoFactoryImplTest {
 
 		assertThat(createdPersonDto).isEqualToComparingFieldByField(expectedPersonDto);
 	}
+	
+	@Test
+	public void whenEntityIsUknowForFactoryThenThrownEntityClassNotFoundException() {
+		
+		DtoFactory dtoFactory = new DtoFactoryImpl();
+		
+		Entity UknownEntity = new Entity() {};
+		assertThatThrownBy(() -> {
+			dtoFactory.create(UknownEntity);
+		}).isExactlyInstanceOf(DtoNotFoundException.class).hasMessage("It was not posible to find the dto associted to entity.");
+	}
+	
 }
