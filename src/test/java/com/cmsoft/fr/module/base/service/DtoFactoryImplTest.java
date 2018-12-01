@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.cmsoft.fr.module.base.data.entity.Entity;
-import com.cmsoft.fr.module.person.data.entity.Person;
+import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 import com.cmsoft.fr.module.person.service.PersonDto;
 
 @RunWith(JUnit4.class)
@@ -32,7 +32,7 @@ public class DtoFactoryImplTest {
 	public void whenPassEntityThenReturnAsociatedDtoToEntity() {
 		// Example: if student entity is passed, then it should return studentDto
 
-		Person personEntityToPass = new Person();
+		PersonEntity personEntityToPass = new PersonEntity();
 		personEntityToPass.setId(1152440783);
 		personEntityToPass.setPhotoName("carlos.png");
 		personEntityToPass.setUsername("carlos");

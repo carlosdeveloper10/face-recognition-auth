@@ -19,7 +19,7 @@ import com.cmsoft.fr.module.base.service.DtoFactoryImpl;
 import com.cmsoft.fr.module.base.service.EntityFactory;
 import com.cmsoft.fr.module.base.service.EntityFactoryImpl;
 import com.cmsoft.fr.module.person.data.dao.PersonDao;
-import com.cmsoft.fr.module.person.data.entity.Person;
+import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonServiceImplTest {
@@ -63,7 +63,7 @@ public class PersonServiceImplTest {
 		personToSave.setUsername("carlos123");
 		personToSave.setBase64Photo("data:image/jpeg;base64,hdkasjdfajgdfkugewuirakjdafgkfdgjdf");
 
-		Person person = new Person();
+		PersonEntity person = new PersonEntity();
 
 		when(personDao.findByUsername("carlos123")).thenReturn(person);
 
@@ -82,8 +82,8 @@ public class PersonServiceImplTest {
 		exceptedSavedPersonDto.setPhotoName("carlos_mario.jpeg");
 
 		EntityFactory entityFactoryy = new EntityFactoryImpl();
-		Person personReturnedByDao = (Person) entityFactoryy.create(personDtoToSave);
-		Person personToSave = personReturnedByDao;
+		PersonEntity personReturnedByDao = (PersonEntity) entityFactoryy.create(personDtoToSave);
+		PersonEntity personToSave = personReturnedByDao;
 
 		EntityFactory entityFactory = mock(EntityFactory.class);
 		when(personDao.save(personToSave)).thenReturn(personReturnedByDao);
@@ -109,7 +109,7 @@ public class PersonServiceImplTest {
 	@Test
 	public void whenUsernameExistInDbThenReturnTrue() {
 
-		Person foundPerson = new Person();
+		PersonEntity foundPerson = new PersonEntity();
 		foundPerson.setUsername("carlos123");
 		when(personDao.findByUsername("carlos123")).thenReturn(foundPerson);
 

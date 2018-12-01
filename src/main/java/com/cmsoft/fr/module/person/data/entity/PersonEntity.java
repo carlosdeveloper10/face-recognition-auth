@@ -7,7 +7,7 @@ import com.cmsoft.fr.module.base.data.entity.Entity;
 
 @javax.persistence.Entity
 @Table(name = "person")
-public class Person extends Entity{
+public class PersonEntity extends Entity{
 
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;

@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.cmsoft.fr.module.base.data.entity.Entity;
-import com.cmsoft.fr.module.person.data.entity.Person;
+import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 import com.cmsoft.fr.module.person.service.PersonDto;
 
 @RunWith(JUnit4.class)
@@ -24,7 +24,7 @@ public class EntityFactoryImplTest {
 		personDtoToPass.setPhotoName("carlos.png");
 		personDtoToPass.setUsername("carlos");
 
-		Person expectedPersonEntity = new Person();
+		PersonEntity expectedPersonEntity = new PersonEntity();
 		expectedPersonEntity.setId(personDtoToPass.getId());
 		expectedPersonEntity.setPhotoName(personDtoToPass.getPhotoName());
 		expectedPersonEntity.setUsername(personDtoToPass.getUsername());
