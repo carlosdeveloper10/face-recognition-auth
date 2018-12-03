@@ -5,7 +5,7 @@ pipeline {
 
 	environment {
         AGENT_PATH = '/home/carlos/Documents/jenkins/agents'
-	CI_TOOLS = '/home/carlos/Documents/jenkins/ci-tools'
+		CI_TOOLS = '/home/carlos/Documents/jenkins/ci-tools'
     }
 
 	stages {
@@ -51,7 +51,41 @@ pipeline {
 		}
 		
 		stage('Deploy on stgae'){
-		    stages{
+		
+			parallel {
+			    stage('Deploy on Dev') {
+                   when {
+                       branch 'develop'
+                   }
+					steps{
+						sh 'mvn package' 
+					    sh 'eb deploy FaceRecognitionAuthDev-env'
+					}
+                }
+                
+                stage('Deploy on Qa') {
+                   when {
+                       branch 'release/*'
+                   }
+					steps{
+						sh 'mvn package' 
+						sh 'eb deploy FaceRecognitionAuthDev-qa'
+					}
+                }
+                
+                stage('Deploy on Pro') {
+                   when {
+                       branch 'master'
+                   }
+				   steps{
+				   		sh 'mvn package' 
+					    sh 'eb deploy FaceRecognitionAuthDev-pro'
+				   }
+                }
+			}
+
+			
+		    /*stages{
                 stage('Dev') {
                    when {
                        branch 'develop'
@@ -79,7 +113,7 @@ pipeline {
 					    sh 'eb deploy FaceRecognitionAuthDev-pro'
 				   }
                 }
-            }
+            }*/
 		}
 	}
 }
