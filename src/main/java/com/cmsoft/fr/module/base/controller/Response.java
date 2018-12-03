@@ -25,8 +25,6 @@ public class Response<T extends Serializable> implements Serializable {
 		switch (httpStatusCode) {
 		case 200:
 			return HttpStatus.OK;
-		case 202:
-			return HttpStatus.ACCEPTED;
 		case 201:
 			return HttpStatus.CREATED;
 		case 500:

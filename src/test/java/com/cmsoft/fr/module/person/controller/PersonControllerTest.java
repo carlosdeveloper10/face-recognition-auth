@@ -14,6 +14,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,7 +26,7 @@ import com.cmsoft.fr.module.person.service.PersonDto;
 import com.cmsoft.fr.module.person.service.PersonService;
 import com.cmsoft.fr.util.TestUtil;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class PersonControllerTest {
 
 	private MockMvc mockMvc;
@@ -33,7 +36,7 @@ public class PersonControllerTest {
 
 	@InjectMocks
 	private PersonController personController;
-	
+
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
@@ -66,31 +69,42 @@ public class PersonControllerTest {
 				.andExpect(jsonPath("$.message").value("The username is already registered. Try with other one"));
 	}
 
+	@Test
+	public void whenServerHasAExceptionThenReturn500AndMessage() throws Exception {
+		PersonDto personDtoRequest = new PersonDto();
+		Answer<PersonDto> ans = new Answer<PersonDto>() {
+			@Override
+			public PersonDto answer(InvocationOnMock invocation) throws Throwable {
+				throw new Exception();
+			}
+		};
+		when(personService.save(org.mockito.ArgumentMatchers.any(PersonDto.class))).then(ans);
+
+		mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+				.content(TestUtil.asJsonString(personDtoRequest))).andExpect(status().isInternalServerError())
+				.andExpect(jsonPath("$.message").value("An error has occurred, we are working to solve it."));
+	}
+
 	@Test()
-	@Ignore("Test is ignored because i have a little problem stubing mocks")
 	public void whenPersonDoesNotExistApiThenReturn201AndMessageAndSavedDto() throws Exception {
 		PersonDto personDtoRequest = new PersonDto();
 		personDtoRequest.setUsername("carlos123");
 		personDtoRequest.setPhotoName("photoname.jpg");
-
-		PersonDto personDtoReturned = new PersonDto();
-		personDtoRequest.setUsername(personDtoRequest.getUsername());
-		personDtoRequest.setPhotoName(personDtoRequest.getPhotoName());
-		personDtoRequest.setId(1);
-
-		//when(personService.save(org.mockito.ArgumentMatchers.eq(personDtoRequest))).thenReturn(personDtoReturned);
-		when(personService.save(org.mockito.ArgumentMatchers.any())).thenReturn(personDtoReturned);
 		
+		PersonDto personDtoReturned = new PersonDto();
+		personDtoReturned.setUsername(personDtoRequest.getUsername());
+		personDtoReturned.setPhotoName(personDtoRequest.getPhotoName());
+		personDtoReturned.setId(1);
+
+		// when(personService.save(org.mockito.ArgumentMatchers.eq(personDtoRequest))).thenReturn(personDtoReturned);
+		when(personService.save(org.mockito.ArgumentMatchers.any())).thenReturn(personDtoReturned);
+
 		mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.asJsonString(personDtoRequest))).andExpect(status().isCreated())
-				.andExpect(jsonPath("$.object").value("carlos123"))
-				.andExpect(jsonPath("$.object.photoname").value("photoname.jpg"))
-				.andExpect(jsonPath("$.object.message").value(1))
+				.andExpect(jsonPath("$.object.photoName").value("photoname.jpg"))
+				.andExpect(jsonPath("$.object.id").value(1))
 				.andExpect(jsonPath("$.message").value("The person was saved successfull"));
-		
-		
+
 	}
-
-
 
 }

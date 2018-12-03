@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import com.cmsoft.fr.module.base.data.entity.Entity;
-import com.cmsoft.fr.module.person.data.entity.Person;
+import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 import com.cmsoft.fr.module.person.service.PersonDto;
 
 @Component
@@ -24,11 +24,11 @@ public class DtoFactoryImpl implements DtoFactory {
 
 	private Class<?> getRelacionatedDtoClass(Entity entity) {
 		Class<?> entityClassType = entity.getClass();
-		if (entityClassType == Person.class) {
+		if (entityClassType == PersonEntity.class) {
 			return PersonDto.class;
 		}
 
-		throw new DtoNotFoundException("It was not posible to find the dto associted to");
+		throw new DtoNotFoundException("It was not posible to find the dto associted to entity.");
 	}
 
 }

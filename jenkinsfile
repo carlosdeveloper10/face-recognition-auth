@@ -4,7 +4,8 @@ pipeline {
     }
 
 	environment {
-        AGENT_PATH = '/opt/jenkins'
+        AGENT_PATH = '/home/carlos/Documents/jenkins/agents'
+		CI_TOOLS = '/home/carlos/Documents/jenkins/ci-tools'
     }
 
 	stages {
@@ -24,7 +25,7 @@ pipeline {
 		stage('Prepare to work'){
 			steps {
     		    //The agent is provider by agent machine to avoid put the application.yml on GIT
-		    	sh 'cp ${AGENT_PATH}/fra/application.yml ${WORKSPACE}/src/main/resources'
+		    	sh 'cp ${AGENT_PATH}/project/fra/application.yml ${WORKSPACE}/src/main/resources'
     		}
 		}
 
@@ -38,7 +39,7 @@ pipeline {
 		stage('SonarQube analysis') {
 			steps {
 				withSonarQubeEnv('sonarServer') {
-					sh '${AGENT_PATH}/ci-tools/sonarqube-scanner/bin/sonar-scanner -Dsonar.projectKey=fra -Dsonar.sources=src/main -Dsonar.tests=src/test -Dsonar.java.binaries=target/classes -Dsonar.jacoco.reportPaths=target/jacoco.exec'
+					sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
 				}
 				script {
 					def qualitygate = waitForQualityGate()
@@ -50,7 +51,41 @@ pipeline {
 		}
 		
 		stage('Deploy on stgae'){
-		    stages{
+		
+			parallel {
+			    stage('Deploy on Dev') {
+                   when {
+                       branch 'develop'
+                   }
+					steps{
+						sh 'mvn package' 
+					    sh 'eb deploy FaceRecognitionAuthDev-env'
+					}
+                }
+                
+                stage('Deploy on Qa') {
+                   when {
+                       branch 'release/*'
+                   }
+					steps{
+						sh 'mvn package' 
+						sh 'eb deploy FaceRecognitionAuthDev-qa'
+					}
+                }
+                
+                stage('Deploy on Pro') {
+                   when {
+                       branch 'master'
+                   }
+				   steps{
+				   		sh 'mvn package' 
+					    sh 'eb deploy FaceRecognitionAuthDev-pro'
+				   }
+                }
+			}
+
+			
+		    /*stages{
                 stage('Dev') {
                    when {
                        branch 'develop'
@@ -78,7 +113,7 @@ pipeline {
 					    sh 'eb deploy FaceRecognitionAuthDev-pro'
 				   }
                 }
-            }
+            }*/
 		}
 	}
 }
