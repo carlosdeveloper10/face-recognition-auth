@@ -11,8 +11,6 @@ import com.cmsoft.fr.module.person.data.dao.PersonDao;
 import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 import com.cmsoft.fr.module.recognition.image.ImageUtil;
 
-import ch.qos.logback.classic.pattern.Util;
-
 @Service
 public class PersonServiceImpl implements PersonService {
 

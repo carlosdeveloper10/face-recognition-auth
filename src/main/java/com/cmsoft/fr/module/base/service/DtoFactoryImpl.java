@@ -10,10 +10,10 @@ import com.cmsoft.fr.module.person.service.PersonDto;
 @Component
 public class DtoFactoryImpl implements DtoFactory {
 
-	private ModelMapper mapper;
-
 	@Override
 	public Dto create(Entity entity) {
+		ModelMapper mapper;
+		
 		if (entity == null)
 			throw new NullPointerException("entity must can not be null");
 

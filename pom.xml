@@ -90,8 +90,6 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.2</version>
 				<configuration>
-					<exclude>**/*Dto.java</exclude>
-					<exclude>some/package/SomeClass.java</exclude>
 				</configuration>
 				<executions>
 					<execution>
