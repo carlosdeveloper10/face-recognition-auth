@@ -3,7 +3,7 @@ branch-defaults:
     environment: FaceRecognitionAuthDev-env
     group_suffix: null
 deploy:
-  artifact: target/face-recognition.jar
+  artifact: target/face-recognition-1.0.0.jar
 global:
   application_name: face-recognition-auth-dev
   branch: null
