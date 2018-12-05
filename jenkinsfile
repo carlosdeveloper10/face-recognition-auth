@@ -50,7 +50,7 @@ pipeline {
 		    }
 		}
 		
-		stage('Deploy on stgae'){
+		stage('Deploy on stage'){
 		
 			parallel {
 			    stage('Deploy on Dev') {

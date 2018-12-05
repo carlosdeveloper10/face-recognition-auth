@@ -18,9 +18,6 @@ public class PersonServiceImpl implements PersonService {
 	private DtoFactory dtoFactory;
 	private EntityFactory entityFactory;
 
-	public PersonServiceImpl() {
-	}
-
 	/**
 	 * Use this construct if you want to do some task of CRUD for person.
 	 * 

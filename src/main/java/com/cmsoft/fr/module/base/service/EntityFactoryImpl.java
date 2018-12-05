@@ -11,7 +11,7 @@ import com.cmsoft.fr.module.person.service.PersonDto;
 public class EntityFactoryImpl implements EntityFactory {
 
 	@Override
-	public Entity create(Dto dto) {
+	public Entity create(EntityDto dto) {
 		
 		if (dto == null)
 			throw new NullPointerException("dto can not be null");
@@ -23,7 +23,7 @@ public class EntityFactoryImpl implements EntityFactory {
 		
 	}
 
-	private Class<?> getRelacionatedDtoClass(Dto dto) {
+	private Class<?> getRelacionatedDtoClass(EntityDto dto) {
 		Class<?> dtoClassType = dto.getClass();
 		if (dtoClassType == PersonDto.class) {
 			return PersonEntity.class;

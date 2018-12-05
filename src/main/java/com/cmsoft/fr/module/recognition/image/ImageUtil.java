@@ -4,12 +4,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class ImageUtil {
-	
-	private ImageUtil() {}
+
+	private ImageUtil() {
+	}
 
 	public static boolean isBase64ImageStructureOk(String imageBase64) {
 		try {
-			// If it's possible get the base64 image, then the image structure is OK
+			// If it's possible to get the base64 image, then the image structure is OK
 			getBase64ImageExtension(imageBase64);
 			return true;
 		} catch (Exception e) {
@@ -27,5 +28,15 @@ public final class ImageUtil {
 			throw new IllegalArgumentException("The argument is not a image");
 		}
 		return coincidenceForHeader.group(2);
+	}
+
+	public static String getBase64ImageBody(String imageBase64) {
+		if (imageBase64 == null)
+			throw new NullPointerException("The base64 image is null.");
+		
+		if(!isBase64ImageStructureOk(imageBase64)) 
+			throw new IllegalArgumentException("The argument is not a image");
+		
+		return imageBase64.split(",")[1];
 	}
 }
