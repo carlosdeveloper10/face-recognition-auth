@@ -2,9 +2,9 @@ package com.cmsoft.fr.module.recognition.service;
 
 public enum PersonMatchingStatus {
 
-	TRUE,
+	FACIAL_FEATURES_FOUND,
 	
-	FALSE,
+	FACIAL_FEATURES_NOT_FOUND,
 	
 	MANY_FACES_ON_INBOUND_IMAGE,
 	

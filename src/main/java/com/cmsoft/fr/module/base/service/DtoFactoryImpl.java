@@ -39,6 +39,7 @@ public class DtoFactoryImpl implements DtoFactory {
 
 		if (dtoName.equals("RECOGNITION"))
 			return new RecognitionDto();
+		
 
 		throw new DtoNotFoundException("It was not posible to find the dto associted to the dtoName.");
 	}
