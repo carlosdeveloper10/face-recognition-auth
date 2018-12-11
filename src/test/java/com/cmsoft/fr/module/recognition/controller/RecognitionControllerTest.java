@@ -52,7 +52,7 @@ public class RecognitionControllerTest {
 		when(recognitionService.recognize(Mockito.any(FaceRecognitionRequestDto.class)))
 				.thenThrow(IllegalArgumentException.class);
 
-		mockMvc.perform(post("/recognition/face").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/recognition/people").contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.asJsonString(requestDto))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.message").value("Some request mandatories "
 						+ "attributes are missing. Check api documetation for POST:/recognition/face"));
@@ -71,7 +71,7 @@ public class RecognitionControllerTest {
 		};
 		when(recognitionService.recognize(Mockito.any(FaceRecognitionRequestDto.class))).then(ans);
 
-		mockMvc.perform(post("/recognition/face").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/recognition/people").contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.asJsonString(requestDto))).andExpect(status().isInternalServerError())
 				.andExpect(jsonPath("$.message").value("An error has occurred, we are working to solve it."));
 	}
@@ -95,7 +95,7 @@ public class RecognitionControllerTest {
 		when(recognitionService.recognize(Mockito.any(FaceRecognitionRequestDto.class))).thenReturn(recognitionDto);
 
 		mockMvc.perform(
-				post("/person").contentType(MediaType.APPLICATION_JSON).content(TestUtil.asJsonString(requestDto)))
+				post("/recognition/people").contentType(MediaType.APPLICATION_JSON).content(TestUtil.asJsonString(requestDto)))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.message").value("FACIAL_FEATURES_FOUND"))
 				.andExpect(jsonPath("$.object.matchedPerson.username").value("carlos123"))

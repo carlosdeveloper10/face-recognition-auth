@@ -51,7 +51,7 @@ public class PersonControllerTest {
 		when(personService.save(org.mockito.ArgumentMatchers.any(PersonDto.class)))
 				.thenThrow(IllegalArgumentException.class);
 
-		mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/people").contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.asJsonString(personDtoRequest))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.message").value("Some mandatories person "
 						+ "attributes are missing. Check api documetation for POST:/person"));
@@ -64,7 +64,7 @@ public class PersonControllerTest {
 		when(personService.save(org.mockito.ArgumentMatchers.any(PersonDto.class)))
 				.thenThrow(EntityExistsException.class);
 
-		mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/people").contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.asJsonString(personDtoRequest))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.message").value("The username is already registered. Try with other one"));
 	}
@@ -80,7 +80,7 @@ public class PersonControllerTest {
 		};
 		when(personService.save(org.mockito.ArgumentMatchers.any(PersonDto.class))).then(ans);
 
-		mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/people").contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.asJsonString(personDtoRequest))).andExpect(status().isInternalServerError())
 				.andExpect(jsonPath("$.message").value("An error has occurred, we are working to solve it."));
 	}
@@ -99,7 +99,7 @@ public class PersonControllerTest {
 		// when(personService.save(org.mockito.ArgumentMatchers.eq(personDtoRequest))).thenReturn(personDtoReturned);
 		when(personService.save(org.mockito.ArgumentMatchers.any())).thenReturn(personDtoReturned);
 
-		mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/people").contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.asJsonString(personDtoRequest))).andExpect(status().isCreated())
 				.andExpect(jsonPath("$.object.photoName").value("photoname.jpg"))
 				.andExpect(jsonPath("$.object.id").value(1))
