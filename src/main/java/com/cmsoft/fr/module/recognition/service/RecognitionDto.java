@@ -1,9 +1,11 @@
 package com.cmsoft.fr.module.recognition.service;
 
+import java.io.Serializable;
+
 import com.cmsoft.fr.module.base.service.NoEntityDto;
 import com.cmsoft.fr.module.person.service.PersonDto;
 
-public class RecognitionDto implements NoEntityDto {
+public class RecognitionDto implements NoEntityDto, Serializable {
 
 	public RecognitionDto() {
 	}

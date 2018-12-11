@@ -15,7 +15,7 @@ public class PersonEntity extends Entity{
 	@Column(name = "photo_name", nullable = false, unique = true)
 	private String photoName;
 	
-	@Column(name = "base64_photo", nullable = false)
+	@Column(name = "base64_photo", nullable = false, columnDefinition = "TEXT")
 	private String base64Photo;
 
 	public String getUsername() {

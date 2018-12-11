@@ -7,6 +7,6 @@ package com.cmsoft.fr.module.base.service;
  * @author Carlos Mario
  *
  */
-public interface NoEntityDto {
+public interface NoEntityDto{
 
 }
