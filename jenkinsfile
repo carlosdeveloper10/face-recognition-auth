@@ -50,7 +50,7 @@ pipeline {
 		    }
 		}
 		
-		stage('Deploy on stgae'){
+		stage('Deploy on stage'){
 		
 			parallel {
 			    stage('Deploy on Dev') {
@@ -84,36 +84,6 @@ pipeline {
                 }
 			}
 
-			
-		    /*stages{
-                stage('Dev') {
-                   when {
-                       branch 'develop'
-                   }
-					steps{
-						sh 'mvn package' 
-					    sh 'eb deploy FaceRecognitionAuthDev-env'
-					}
-                }
-                stage('Qa') {
-                   when {
-                       branch 'release/*'
-                   }
-					steps{
-						sh 'mvn package' 
-						sh 'eb deploy FaceRecognitionAuthDev-qa'
-					}
-                }
-                stage('Pro') {
-                   when {
-                       branch 'master'
-                   }
-				   steps{
-				   		sh 'mvn package' 
-					    sh 'eb deploy FaceRecognitionAuthDev-pro'
-				   }
-                }
-            }*/
 		}
 	}
 }

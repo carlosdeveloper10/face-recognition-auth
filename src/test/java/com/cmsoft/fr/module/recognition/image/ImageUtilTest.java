@@ -49,4 +49,26 @@ public class ImageUtilTest {
 		assertThat(jpg).isEqualTo(expectedExtension[1]);
 		assertThat(jpeg).isEqualTo(expectedExtension[2]);
 	}
+	
+	// ------ TDD for getBase64ImageBody(String imageBase64)
+	@Test
+	public void whenImageIsNullThenThrownNullPointerException_2() {
+		assertThatThrownBy(() -> {
+			ImageUtil.getBase64ImageBody(null);
+		}).isExactlyInstanceOf(NullPointerException.class).hasMessage("The base64 image is null.");
+	}
+	
+	@Test
+	public void whenBase64ImageDoesNotHaveCorrectStructureThrowIllegalArguemtException() {
+		assertThatThrownBy(() -> {
+			ImageUtil.getBase64ImageBody("data:video/mp4;base64,HAS_BAD_STURCTURE");
+		}).isExactlyInstanceOf(IllegalArgumentException.class).hasMessage("The argument is not a image");
+	}
+	
+	@Test
+	public void whenBase64ImageDoesHavsCorrectStructureThrowIllegalArguemtException() {
+		String base64ImageBody = ImageUtil.getBase64ImageBody("data:image/jpeg;base64,BASE64_IMAGE_STRUTURE_IS_OK_AND_THIS_IS_THE_BODY");
+		assertThat(base64ImageBody).isEqualTo("BASE64_IMAGE_STRUTURE_IS_OK_AND_THIS_IS_THE_BODY");
+	}
+
 }

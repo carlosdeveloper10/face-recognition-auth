@@ -48,7 +48,7 @@ public class EntityFactoryImplTest {
 		
 		EntityFactory entityFactory = new EntityFactoryImpl();
 		
-		Dto UknownDto = new Dto() {};
+		EntityDto UknownDto = new EntityDto() {};
 		assertThatThrownBy(() -> {
 			entityFactory.create(UknownDto);
 		}).isExactlyInstanceOf(EntityClassNotFoundException.class).hasMessage("It was not posible to find the dto associted to entity.");

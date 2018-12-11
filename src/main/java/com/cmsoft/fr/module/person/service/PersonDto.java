@@ -1,8 +1,8 @@
 package com.cmsoft.fr.module.person.service;
 
-import com.cmsoft.fr.module.base.service.Dto;
+import com.cmsoft.fr.module.base.service.EntityDto;
 
-public class PersonDto extends Dto {
+public class PersonDto extends EntityDto {
 
 	private String username;
 	
