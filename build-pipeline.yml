@@ -21,12 +21,20 @@ steps:
     additionalCodeCoverageFiles: '$(System.DefaultWorkingDirectory)/target/jacoco.exec'
  
  #Sonar qube block   
-- task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@4
-  displayName: 'Prepare analysis on SonarQube'
+#- task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@4
+#  displayName: 'Prepare analysis on SonarQube'
+#  inputs:
+#    SonarQube: 'sonar-qube'
+#    scannerMode: CLI
+#    configFile: sonar-project.properties
+
+steps:
+- task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+  displayName: 'Prepare analysis on SonarCloud'
   inputs:
-    SonarQube: 'sonar-qube'
+    SonarCloud: fra
+    organization: 'carlosdeveloper10-github'
     scannerMode: CLI
-    configFile: sonar-project.properties
     
 - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/bin/sonar-scanner
   displayName: 'Run sonnar analys'
