@@ -1,8 +1,11 @@
 steps:
 
+ #Unit test block 
 - script: mvn test
   displayName: 'Run unit test'
-   
+  #-----
+ 
+ 
 - task: PublishTestResults@2
   displayName: 'Publish unit test result'
   inputs:
@@ -16,7 +19,8 @@ steps:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
     reportDirectory: '$(System.DefaultWorkingDirectory)/target/site/jacoco'
     additionalCodeCoverageFiles: '$(System.DefaultWorkingDirectory)/target/jacoco.exec'
-    
+ 
+ #Sonar qube block   
 - task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@4
   displayName: 'Prepare analysis on SonarQube'
   inputs:
@@ -24,3 +28,6 @@ steps:
     scannerMode: CLI
     configFile: sonar-project.properties
     
+- script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/bin/sonar-scanner
+  displayName: 'Run sonnar analys'
+# ------------    
