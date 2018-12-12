@@ -8,3 +8,8 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/*.xml'
+    
+- task: PublishCodeCoverageResults@1
+  displayName: 'Coverage report' 
+  inputs:
+    codeCoverageTool: 'JaCoCo'
