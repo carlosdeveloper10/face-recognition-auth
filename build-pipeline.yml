@@ -13,4 +13,4 @@ steps:
   displayName: 'Coverage report' 
   inputs:
     codeCoverageTool: 'JaCoCo'
-    summaryFileLocation: 
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
