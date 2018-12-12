@@ -13,3 +13,4 @@ steps:
   displayName: 'Coverage report' 
   inputs:
     codeCoverageTool: 'JaCoCo'
+    summaryFileLocation:
