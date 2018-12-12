@@ -2,7 +2,7 @@ steps:
 
 - script: mvn test
   displayName: 'Run unit test'
-  
+   
 - task: PublishTestResults@2
   displayName: 'Publish unit test result'
   inputs:
@@ -10,7 +10,9 @@ steps:
     testResultsFiles: '**/*.xml'
     
 - task: PublishCodeCoverageResults@1
-  displayName: 'Coverage report' 
+  displayName: 'Publish coverage report' 
   inputs:
     codeCoverageTool: 'JaCoCo'
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/target/site/jacoco'
+    additionalCodeCoverageFiles: '$(System.DefaultWorkingDirectory)/target/jacoco.exec'
