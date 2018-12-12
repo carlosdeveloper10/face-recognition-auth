@@ -1,3 +1,11 @@
 steps:
+
 - script: mvn test
   displayName: 'Run unit test'
+  
+- task: PublishTestResults@2
+  displayName: 'Publish unit test result'
+  inputs:
+    testRunner: VSTest
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/*.xml'
