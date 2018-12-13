@@ -1,4 +1,6 @@
-steps:
+- job: MyJob
+  displayName: My First Job
+  steps:
   - script: mvn test
     displayName: 'Run unit test'
     
@@ -21,7 +23,7 @@ steps:
     inputs:
       SonarCloud: fra
       organization: 'carlosdeveloper10-github'
-      scannerMode: CI
+      scannerMode: CLI
       
   - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/bin/sonar-scanner
     displayName: 'Run sonnar analys'  
