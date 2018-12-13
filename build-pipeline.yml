@@ -32,9 +32,4 @@
       scannerMode: CI
       
   - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/bin/sonar-scanner
-    displayName: 'Run sonnar analys'
-    
-  - task: SimondeLang.sonarcloud-buildbreaker.sonar-buildbreaker.sonarcloud-buildbreaker@1
-    displayName: 'Break build on quality gate failure'
-    inputs:
-      SonarCloud: fra  
+    displayName: 'Run sonnar analys'  
