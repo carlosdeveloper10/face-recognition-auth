@@ -31,9 +31,5 @@ phases:
     displayName: Run sonnr analys
   - task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@4
     displayName: 'Publish Sonar Quality gates'
-  - task: PowerShell@2
-    displayName: 'Cheking quality gate'
-    inputs:
-      pwsh: true
-      filePath: $(Agent.HomeDirectory)/ci-tools/get-sonarqube-quality-gate-status.ps1
-      arguments: '-SonarServerName $(SonarServerName) -SonarProjectKey fra -SonarToken $(SonarToken)'
+
+    
