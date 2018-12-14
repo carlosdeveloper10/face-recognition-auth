@@ -56,7 +56,7 @@ pipeline {
 		}
 		stage('Qulity - gates - test') {
 			steps {
-    	   		sh '.${CI_TOOLS}/sonarqube-scanner/quality-gates-checker.sh 94338c5a717afa703f1f5f6daff685be40ba9d8 localhost:9000 ${WORKSPACE}/.scannerwork/report-task.txt'
+    	   		sh '${CI_TOOLS}/sonarqube-scanner/quality-gates-checker.sh 94338c5a717afa703f1f5f6daff685be40ba9d8 localhost:9000 ${WORKSPACE}/.scannerwork/report-task.txt'
    	    	}
 		}
 		
