@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public final class ImageUtil {
 
-	private ImageUtil() {
+	public ImageUtil() {
 	}
 
 	public static boolean isBase64ImageStructureOk(String imageBase64) {
