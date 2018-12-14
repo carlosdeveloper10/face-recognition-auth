@@ -41,12 +41,16 @@ pipeline {
 				withSonarQubeEnv('sonarServer') {
 					sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
 				}
-				script {
+				
+			steps {
+    	   		sh '${CI_TOOLS}/quality-gates-checker.sh 94338c5a717afa703f1f5f6daff685be40ba9d8 localhost:9000 ${WORKSPACE}/.scannerwork/report-task.txt'
+   	    	}
+				/*script {
 					def qualitygate = waitForQualityGate()
 					if (qualitygate.status != "OK") {
 						error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
 					}
-				}
+				}*/
 		    }
 		}
 		
