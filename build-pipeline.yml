@@ -1,4 +1,15 @@
 phases:
+
+- phase: agents_features
+  displayName: Agents features 
+  steps:
+  - script: echo list of enviromet variables
+  - script: env
+  - script: echo agent machine attributes
+  - script: lscpu
+  - script: free -h
+  - script: dmesg | head -1
+
 - phase: unit_testing
   displayName: Unit tests
   steps:
@@ -29,7 +40,10 @@ phases:
       scannerMode: CLI
   - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/bin/sonar-scanner
     displayName: Run sonnr analys
+  - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/quality-gates-checker.sh $(SonarToken) $(SonarServerName) $(System.DefaultWorkingDirectory)/.scannerwork/report-task.txt 
+    displayName: Run sonar analysis
   - task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@4
     displayName: 'Publish Sonar Quality gates'
+  
 
     
