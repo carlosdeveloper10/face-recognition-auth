@@ -1,3 +1,9 @@
+trigger:
+  - master
+  - releases/*
+  - develop
+  - feature/*
+
 phases:
 
 - phase: agents_features
@@ -45,5 +51,14 @@ phases:
   - task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@4
     displayName: 'Publish Sonar Quality gates'
   
-
+- phase: publish_to_pipelines
+  displayName: Publish build artifac
+  dependesOn: sonarqube_analisys
+  steps:
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish artifac: fra'
+    inputs:
+      PathtoPublish: 'target/face-recognition-1.0.0.jar'
+      ArtifactName: FRA
+  
     
