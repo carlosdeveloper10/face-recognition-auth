@@ -55,6 +55,7 @@ phases:
   displayName: Publish build artifac
   dependsOn: sonarqube_analisys
   steps:
+  - script: mvn package -DskipTests
   - task: PublishBuildArtifacts@1
     displayName: 'Publish artifac: fra'
     inputs:
