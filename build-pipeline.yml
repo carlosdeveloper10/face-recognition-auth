@@ -53,7 +53,7 @@ phases:
   
 - phase: publish_to_pipelines
   displayName: Publish build artifac
-  dependesOn: sonarqube_analisys
+  dependsOn: sonarqube_analisys
   steps:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish artifac: fra'
