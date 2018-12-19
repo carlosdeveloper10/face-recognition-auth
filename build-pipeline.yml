@@ -61,4 +61,5 @@ phases:
       PathtoPublish: 'target/face-recognition-1.0.0.jar'
       ArtifactName: FRA
   
+  
     
