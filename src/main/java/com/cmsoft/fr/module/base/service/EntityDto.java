@@ -12,6 +12,10 @@ import java.io.Serializable;
  */
 public abstract class EntityDto implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4657506019031285752L;
 	private long id;
 
 	public long getId() {

@@ -5,6 +5,14 @@ import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Represents the HTTP response for any HTTP request.
+ * 
+ * 
+ * @param <T> Represents the object that was requested.
+ * @author carlos
+ *
+ */
 public class Response<T extends Serializable> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -14,11 +22,6 @@ public class Response<T extends Serializable> implements Serializable {
 	private String message;
 
 	private int httpStatusCode;
-
-	public Response() {
-		// No implementation for the moment.
-	}
-
 
 	@JsonIgnore
 	public HttpStatus getHttpStatus() {

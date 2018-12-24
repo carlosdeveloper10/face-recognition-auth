@@ -1,6 +1,6 @@
 /**
- * Offers a groups interfaces, abstract classes that can be used as base for
- * some implementations
+ * Contains a groups package, interfaces, abstract classes that can be used as
+ * base for core app implementations
  * 
  * @author Carlos
  *
