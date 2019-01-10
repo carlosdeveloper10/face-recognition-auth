@@ -1,0 +1,16 @@
+spring:
+  data:
+    rest:
+      base-path: /api
+  datasource:
+    username: carlos
+    password: cali1912
+    url: jdbc:postgresql://my-testing-postgres.clha71iqoe17.us-east-1.rds.amazonaws.com/fra_db
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 5000
