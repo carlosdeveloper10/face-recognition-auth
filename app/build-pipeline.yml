@@ -21,6 +21,7 @@ phases:
   steps:
   - script: mvn test
     displayName: Run unit test
+    workingDirectory: $(System.DefaultWorkingDirectory)/app
   - task: PublishTestResults@2
     displayName: Publish unit test result
     inputs:
