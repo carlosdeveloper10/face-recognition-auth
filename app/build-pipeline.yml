@@ -30,9 +30,9 @@ phases:
     displayName: Publish coverage report
     inputs:
       codeCoverageTool: JaCoCo
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/target/site/jacoco
-      additionalCodeCoverageFiles: $(System.DefaultWorkingDirectory)/target/jacoco.exec
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/app/target/site/jacoco/jacoco.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/app/target/site/jacoco
+      additionalCodeCoverageFiles: $(System.DefaultWorkingDirectory)/app/target/jacoco.exec
       
 - phase: sonarqube_analisys
   displayName: Sonar Qube Anslysy
@@ -59,7 +59,7 @@ phases:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish artifac: fra'
     inputs:
-      PathtoPublish: 'target/face-recognition-1.0.0.jar'
+      PathtoPublish: 'app/target/face-recognition-1.0.0.jar'
       ArtifactName: FRA
   
   
