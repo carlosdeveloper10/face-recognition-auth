@@ -47,6 +47,7 @@ phases:
       scannerMode: CLI
   - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/bin/sonar-scanner
     displayName: Run sonnr analys
+    workingDirectory: $(System.DefaultWorkingDirectory)/app
   - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/quality-gates-checker.sh $(SonarToken) $(SonarServerName) $(System.DefaultWorkingDirectory)/.scannerwork/report-task.txt 
     displayName: Run sonar analysis
   - task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@4
