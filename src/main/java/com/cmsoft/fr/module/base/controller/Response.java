@@ -2,6 +2,7 @@ package com.cmsoft.fr.module.base.controller;
 
 import java.io.Serializable;
 import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Response<T extends Serializable> implements Serializable {
@@ -15,21 +16,15 @@ public class Response<T extends Serializable> implements Serializable {
 	private int httpStatusCode;
 
 	public Response() {
+		// No implementation for the moment.
 	}
 
-	public Response(T object, String message, int httpStatusCode) {
-		this.object = object;
-		this.message = message;
-		this.httpStatusCode = httpStatusCode;
-	}
 
 	@JsonIgnore
 	public HttpStatus getHttpStatus() {
 		switch (httpStatusCode) {
 		case 200:
 			return HttpStatus.OK;
-		case 202:
-			return HttpStatus.ACCEPTED;
 		case 201:
 			return HttpStatus.CREATED;
 		case 500:

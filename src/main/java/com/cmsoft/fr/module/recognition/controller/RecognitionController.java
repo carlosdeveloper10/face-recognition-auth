@@ -1,30 +1,45 @@
 package com.cmsoft.fr.module.recognition.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cmsoft.fr.module.base.controller.Response;
+import com.cmsoft.fr.module.recognition.service.FaceRecognitionRequestDto;
+import com.cmsoft.fr.module.recognition.service.RecognitionDto;
+import com.cmsoft.fr.module.recognition.service.RecognitionService;
 
-/**
- * RestController that receive request to recognition a face and looking for a
- * matching face in database.
- * 
- * @author Carlos Mario
- *
- */
-@RestController("/recognition")
+@RestController
+@RequestMapping("/recognition/people")
 public class RecognitionController {
 
-	@GetMapping()
-	private ResponseEntity lookForAMatch() {
+	@Autowired
+	private RecognitionService recognitionService;
 
-		Response response = new Response<>();
+	@PostMapping
+	public ResponseEntity<Response<RecognitionDto>> faceRecognition(@RequestBody FaceRecognitionRequestDto requestDto) {
 
-		response.setHttpStatusCode(200);
-		response.setMessage("Ok");
-		response.setObject(new DetentionDto());
+		Response<RecognitionDto> response = new Response<>();
 
-		return new ResponseEntity(response, response.getHttpStatus());
+		try {
+			RecognitionDto recognitionDto = recognitionService.recognize(requestDto);
+			response.setObject(recognitionDto);
+			response.setHttpStatusCode(HttpServletResponse.SC_CREATED);
+			response.setMessage(recognitionDto.getRecognition().toString());
+		} catch (IllegalArgumentException e) {
+			response.setMessage("Some request mandatories "
+					+ "attributes are missing. Check api documetation for POST:/recognition/face");
+			response.setHttpStatusCode(HttpServletResponse.SC_OK);
+		}catch (Exception e) {
+			response.setMessage("An error has occurred, we are working to solve it.");
+			response.setHttpStatusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+
+		return new ResponseEntity<>(response, response.getHttpStatus());
 	}
 }

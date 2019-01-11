@@ -3,11 +3,87 @@ pipeline {
         label 'linux-mint'
     }
 
+	environment {
+        AGENT_PATH = '/home/carlos/Documents/jenkins/agents'
+		CI_TOOLS = '/home/carlos/Documents/jenkins/ci-tools'
+    }
+
 	stages {
-	    stage('Run unit test') {
+		stage('Show agent machine info and status') {
+			steps {
+			    sh 'echo list of enviromet variables'
+			    sh 'env'
+			    
+			    sh 'echo agent machine attributes'
+			    sh 'lscpu'
+			    sh 'free -h'
+			    sh 'dmesg | head -1'
+			}
+		   
+		}
+		
+		stage('Prepare to work'){
+			steps {
+    		    //The agent is provider by agent machine to avoid put the application.yml on GIT
+		    	sh 'cp ${AGENT_PATH}/project/fra/application.yml ${WORKSPACE}/src/main/resources'
+    		}
+		}
+
+	    stage('Unit test') {
     	   steps {
     	   		sh 'mvn test'
+    	   		junit 'target/surefire-reports/TEST-*xml'
    	    	}
     	}
+
+		stage('SonarQube analysis') {
+			steps {
+				withSonarQubeEnv('sonarServer') {
+					sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
+				}
+				script {
+					def qualitygate = waitForQualityGate()
+					if (qualitygate.status != "OK") {
+						error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
+					}
+				}
+		    }
+		}
+		
+		stage('Deploy on stage'){
+		
+			parallel {
+			    stage('Deploy on Dev') {
+                   when {
+                       branch 'develop'
+                   }
+					steps{
+						sh 'mvn package' 
+					    sh 'eb deploy FaceRecognitionAuthDev-env'
+					}
+                }
+                
+                stage('Deploy on Qa') {
+                   when {
+                       branch 'release/*'
+                   }
+					steps{
+						sh 'mvn package' 
+						sh 'eb deploy FaceRecognitionAuthDev-qa'
+					}
+                }
+                
+                stage('Deploy on Pro') {
+                   when {
+                       branch 'master'
+                   }
+				   steps{
+				   		sh 'mvn package' 
+					    sh 'eb deploy FaceRecognitionAuthDev-pro'
+				   }
+                }
+			}
+
+		}
 	}
 }
