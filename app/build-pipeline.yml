@@ -58,6 +58,7 @@ phases:
   dependsOn: sonarqube_analisys
   steps:
   - script: mvn package -DskipTests
+    workingDirectory: $(System.DefaultWorkingDirectory)/app
   - task: PublishBuildArtifacts@1
     displayName: 'Publish artifac: fra'
     inputs:
