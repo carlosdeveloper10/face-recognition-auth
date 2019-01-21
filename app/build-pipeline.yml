@@ -56,7 +56,7 @@ phases:
 - phase: publish_to_pipelines
   displayName: Publish build artifac
   dependsOn: sonarqube_analisys
-  condition: and(succeeded(), or(variables['Build.SourceBranch'], 'refs/heads/release/*', 'refs/heads/release/master', 'refs/heads/release/develop'))
+  condition: and(succeeded(), or(variables['Build.SourceBranch'], 'refs/heads/release/*', 'refs/heads/master', 'refs/heads/develop'))
   steps:
   - script: mvn package -DskipTests
     workingDirectory: $(System.DefaultWorkingDirectory)/app

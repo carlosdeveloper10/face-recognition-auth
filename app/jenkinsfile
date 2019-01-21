@@ -19,7 +19,6 @@ pipeline {
 			    sh 'free -h'
 			    sh 'dmesg | head -1'
 			}
-		   
 		}
 		
 		stage('Prepare to work'){
@@ -41,24 +40,21 @@ pipeline {
 				withSonarQubeEnv('sonarServer') {
 					sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
 				}
-			
-			/*	
-			steps {
-    	   		sh '${CI_TOOLS}/quality-gates-checker.sh 94338c5a717afa703f1f5f6daff685be40ba9d8 localhost:9000 ${WORKSPACE}/.scannerwork/report-task.txt'
-   	    	}
-				script {
-					def qualitygate = waitForQualityGate()
-					if (qualitygate.status != "OK") {
-						error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
-					}
-				}*/
+				timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
 		    }
 		}
-		stage('Qulity - gates - test') {
-			steps {
-    	   		sh '${CI_TOOLS}/sonarqube-scanner/quality-gates-checker.sh f6b30af63b4e3f709af9c7ab0e19ad923c281d6a localhost:9000 ${WORKSPACE}/.scannerwork/report-task.txt'
-   	    	}
+		
+		stage('RESTful integration test'){
+		    steps {
+		    	sh 'docker run -td --name="pg-test" -e POSTGRES_PASSWORD=246810 -e POSTGRES_USER=carlos -e POSTGRES_DB=fra_db postgres'
+    			sh 'BD_IP=$(docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" pg-test)'
+    			sh 'mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasoruce=jdbc:postgresql://${BD_IP}/fra_db,--spring.datasource.username=carlos,--spring.datasource.password=246810,--server.port=5001"'
+    			sh 'docker rm -f pg-test'
+    		}
 		}
+
 		
 		stage('Deploy on stage'){
 		

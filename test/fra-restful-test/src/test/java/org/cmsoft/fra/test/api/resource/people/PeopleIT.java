@@ -5,9 +5,9 @@ import static org.hamcrest.CoreMatchers.is;
 
 import org.cmsoft.fra.test.GenericIT;
 import org.cmsoft.fra.test.UtilTest;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
-
-import io.restassured.response.ValidatableResponse;
+import org.junit.runners.MethodSorters;
 
 
 /**
@@ -16,10 +16,11 @@ import io.restassured.response.ValidatableResponse;
  * @author carlos
  *
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PeopleIT extends GenericIT {
 
 	@Test
-	public void whenPersonIsSavedSuccessfullThenApiReturn201() {
+	public void step1_whenPersonIsSavedSuccessfullThenApiReturn201_IT() {
 		
 		given()
 			.body(UtilTest.getFilesFromResource("json/people/ok-person.json"))
@@ -31,7 +32,7 @@ public class PeopleIT extends GenericIT {
 	}
 	
 	@Test
-	public void whenPersonExistsThenApiReturn200() {
+	public void step2_whenPersonExistsThenApiReturn200_IT() {
 		
 		given()
 			.body(UtilTest.getFilesFromResource("json/people/ok-person.json"))
@@ -45,7 +46,7 @@ public class PeopleIT extends GenericIT {
 	}
 	
 	@Test
-	public void whenPersonRequestIsBadThenApiReturn200() {
+	public void step3_whenPersonRequestIsBadThenApiReturn200() {
 		
 		given()
 			.body(UtilTest.getFilesFromResource("json/people/bad-person.json"))
