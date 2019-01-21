@@ -24,7 +24,7 @@ pipeline {
 		stage('Prepare to work'){
 			steps {
     		    //The agent is provider by agent machine to avoid put the application.yml on GIT
-		    	sh 'cp ${AGENT_PATH}/project/fra/application.yml ${WORKSPACE}/src/main/resources'
+		    	sh 'cp ${AGENT_PATH}/project/fra/application.yml ${WORKSPACE}/app/src/main/resources'
     		}
 		}
 
