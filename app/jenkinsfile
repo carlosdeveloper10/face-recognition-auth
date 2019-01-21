@@ -29,30 +29,37 @@ pipeline {
 		}
 
 	    stage('Unit test') {
-    	   steps {
-    	   		sh 'mvn test'
-    	   		junit 'target/surefire-reports/TEST-*xml'
-   	    	}
+		    dir("app"){
+		        steps {
+	    	   		sh 'mvn test'
+	    	   		junit 'target/surefire-reports/TEST-*xml'
+	   	    	}
+		    }
     	}
 
 		stage('SonarQube analysis') {
-			steps {
-				withSonarQubeEnv('sonarServer') {
-					sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
-				}
-				timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
-		    }
+			dir("app"){
+				steps {
+					withSonarQubeEnv('sonarServer') {
+						sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
+					}
+					timeout(time: 1, unit: 'HOURS') {
+	                    waitForQualityGate abortPipeline: true
+	                }
+			    }
+			}
 		}
 		
 		stage('RESTful integration test'){
-		    steps {
-		    	sh 'docker run -td --name="pg-test" -e POSTGRES_PASSWORD=246810 -e POSTGRES_USER=carlos -e POSTGRES_DB=fra_db postgres'
-    			sh 'BD_IP=$(docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" pg-test)'
-    			sh 'mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasoruce=jdbc:postgresql://${BD_IP}/fra_db,--spring.datasource.username=carlos,--spring.datasource.password=246810,--server.port=5001"'
-    			sh 'docker rm -f pg-test'
-    		}
+		
+			dir("test/fra-restful-test"){
+			    steps {
+			    	sh 'docker run -td --name="pg-test" -e POSTGRES_PASSWORD=246810 -e POSTGRES_USER=carlos -e POSTGRES_DB=fra_db postgres'
+	    			sh 'BD_IP=$(docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" pg-test)'
+	    			sh 'mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasoruce=jdbc:postgresql://${BD_IP}/fra_db,--spring.datasource.username=carlos,--spring.datasource.password=246810,--server.port=5001"'
+	    			sh 'docker rm -f pg-test'
+	    		}
+			}
 		}
 
 		
