@@ -53,11 +53,12 @@ pipeline {
 		stage('RESTful integration test'){
 			steps {
 				sh 'docker run --net carlos-net --ip 172.18.0.2 -td --name="pg-test" -e POSTGRES_PASSWORD=246810 -e POSTGRES_USER=carlos -e POSTGRES_DB=fra_db postgres'
+		    	sh 'sleep 30' //sleep used to wait for db
 		    	dir("app"){
 		    		sh 'mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasoruce=jdbc:postgresql://172.18.0.2:5432/fra_db,--spring.datasource.username=carlos,--spring.datasource.password=246810,--server.port=5001"'
 		    	}
 		    	dir("test/fra-restful-test"){
-		    		sh 'mvn test -Dserver.port=5000 -Dserver.host=http://localhost'
+		    		sh 'mvn test -Dserver.port=5001 -Dserver.host=http://localhost'
 		    	}
 			}
 			post {
