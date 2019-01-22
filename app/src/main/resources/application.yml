@@ -6,7 +6,7 @@ spring:
     username: carlos
     password: 246810
 #   url: jdbc:postgresql://my-testing-postgres.clha71iqoe17.us-east-1.rds.amazonaws.com/fra_db
-    url: jdbc:postgresql://172.17.0.2:5432/fra_db
+    url: jdbc:postgresql://172.18.0.2:5432/fra_db
   jpa:
     hibernate:
       ddl-auto: update

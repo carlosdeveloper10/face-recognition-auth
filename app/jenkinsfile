@@ -54,7 +54,7 @@ pipeline {
 			steps {
 				sh 'docker run --net carlos-net --ip 172.18.0.2 -td --name="pg-test" -e POSTGRES_PASSWORD=246810 -e POSTGRES_USER=carlos -e POSTGRES_DB=fra_db postgres'
 		    	dir("app"){
-		    		sh 'mvn spring-boot:run -Dspring-boot.run.arguments=--spring.datasoruce=jdbc:postgresql://172.18.0.2:5432/fra_db,--spring.datasource.username=carlos,--spring.datasource.password=246810,--server.port=5001'
+		    		sh 'mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasoruce=jdbc:postgresql://172.18.0.2:5432/fra_db,--spring.datasource.username=carlos,--spring.datasource.password=246810,--server.port=5001"'
 		    	}
 		    	dir("test/fra-restful-test"){
 		    		sh 'mvn test -Dserver.port=5000 -Dserver.host=http://localhost'
