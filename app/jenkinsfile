@@ -2,9 +2,13 @@ pipeline {
     agent {
         label 'docker-agent'
     }
-
+    
+    environment {
+        CI_TOOLS = '/home/ci-tools'
+    }
+    
 	stages {
-
+	    
 	    stage('Unit test') {
 		    steps {
 		        dir("app"){
@@ -13,43 +17,24 @@ pipeline {
 	   	    	}
 		    }
     	}
-
+    	
 		stage('SonarQube analysis') {
 			steps {
-				def scannerHome = tool 'sonarScanner_v330'
-				dir("app"){
 					withSonarQubeEnv('sonarQubeServer') {
-						sh '${scannerHome}/bin/sonar-scanner'
-						//sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
+						//sh '${scannerHome}/bin/sonar-scanner'
+						sh '${CI_TOOLS}/sonnar-scanner/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner'
 					}
 					timeout(time: 1, unit: 'HOURS') {
 	                    waitForQualityGate abortPipeline: true
 	                }
-			    }
-			}
+			 }
 		}
 		
 		stage('RESTful integration test'){
-			steps {
-				sh 'docker run --net carlos-net --ip 172.18.0.2 -td --name="pg-test" -e POSTGRES_PASSWORD=246810 -e POSTGRES_USER=carlos -e POSTGRES_DB=fra_db postgres'
-		    	sh 'sleep 30' //sleep used to wait for db
-		    	dir("app"){
-		    		sh 'mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasoruce=jdbc:postgresql://172.18.0.2:5432/fra_db,--spring.datasource.username=carlos,--spring.datasource.password=246810,--server.port=5001"'
-		    	}
-		    	dir("test/fra-restful-test"){
-		    		sh 'mvn test -Dserver.port=5001 -Dserver.host=http://localhost'
-		    	}
-			}
-			post {
-			    always{
-			        sh 'docker rm -f pg-test'
-			    }
-			}
+			sh 'step unsed'
 		}
 
-		
 		stage('Deploy on stage'){
-		
 			parallel {
 			    stage('Deploy on Dev') {
                    when {
@@ -81,6 +66,7 @@ pipeline {
 				   }
                 }
 			}
-		}
+		}	
 	}
 }
+
