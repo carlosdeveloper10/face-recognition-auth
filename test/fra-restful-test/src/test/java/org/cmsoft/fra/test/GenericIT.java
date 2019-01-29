@@ -19,14 +19,14 @@ public abstract class GenericIT {
 	public static void setup() {
 		String port = System.getProperty("server.port");
 		if (port == null) {
-			RestAssured.port = Integer.valueOf(8080);
+			RestAssured.port = Integer.valueOf(5000);
 		} else {
 			RestAssured.port = Integer.valueOf(port);
 		}
 
 		String baseHost = System.getProperty("server.host");
 		if (baseHost == null) {
-			baseHost = "http://localhost/api";
+			baseHost = "http://localhost";
 		}
 
 		RestAssured.baseURI = baseHost;
@@ -35,6 +35,4 @@ public abstract class GenericIT {
 				.httpClient(HttpClientConfig.httpClientConfig().setParam("http.connection.timeout", 5000));
 	}
 	
-	@AfterClass
-	public abstract void afterTest();
 }
