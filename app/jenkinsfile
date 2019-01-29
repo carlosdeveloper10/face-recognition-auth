@@ -1,32 +1,9 @@
 pipeline {
     agent {
-        label 'linux-mint'
-    }
-
-	environment {
-        AGENT_PATH = '/home/carlos/Documents/jenkins/agents'
-		CI_TOOLS = '/home/carlos/Documents/jenkins/ci-tools'
+        label 'docker-agent'
     }
 
 	stages {
-		stage('Show agent machine info and status') {
-			steps {
-			    sh 'echo list of enviromet variables'
-			    sh 'env'
-			    
-			    sh 'echo agent machine attributes'
-			    sh 'lscpu'
-			    sh 'free -h'
-			    sh 'dmesg | head -1'
-			}
-		}
-		
-		stage('Prepare to work'){
-			steps {
-    		    //The agent is provider by agent machine to avoid put the application.yml on GIT
-		    	sh 'cp ${AGENT_PATH}/project/fra/application.yml ${WORKSPACE}/app/src/main/resources'
-    		}
-		}
 
 	    stage('Unit test') {
 		    steps {
@@ -40,8 +17,9 @@ pipeline {
 		stage('SonarQube analysis') {
 			steps {
 				dir("app"){
-					withSonarQubeEnv('sonarServer') {
-						sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
+					withSonarQubeEnv('sonarQubeServer') {
+						sh '${scannerHome}/bin/sonar-scanner'
+						//sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
 					}
 					timeout(time: 1, unit: 'HOURS') {
 	                    waitForQualityGate abortPipeline: true
@@ -65,9 +43,7 @@ pipeline {
 			    always{
 			        sh 'docker rm -f pg-test'
 			    }
-
 			}
-
 		}
 
 		
