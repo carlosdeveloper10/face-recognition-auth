@@ -31,7 +31,9 @@ pipeline {
 		}
 		
 		stage('RESTful integration test'){
-			sh 'step unsed'
+			steps {
+				sh 'echo step unsed'			    
+			}
 		}
 
 		stage('Deploy on stage'){
