@@ -20,13 +20,15 @@ pipeline {
     	
 		stage('SonarQube analysis') {
 			steps {
+				dir("app"){
 					withSonarQubeEnv('sonarQubeServer') {
-						//sh '${scannerHome}/bin/sonar-scanner'
+							//sh '${scannerHome}/bin/sonar-scanner'
 						sh '${CI_TOOLS}/sonnar-scanner/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner'
 					}
 					timeout(time: 1, unit: 'HOURS') {
-	                    waitForQualityGate abortPipeline: true
-	                }
+		            	waitForQualityGate abortPipeline: true
+		            }
+				 }
 			 }
 		}
 		
