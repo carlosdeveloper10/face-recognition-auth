@@ -34,7 +34,12 @@ pipeline {
 		
 		stage('RESTful integration test'){
 			steps {
-				sh 'echo step unsed'			    
+				dir("app"){
+					sh 'mvn spring-boot:run -Dspring-boot.run.arguments=--port=8085,--dburl=jdbc:postgresql://ec2-174-129-224-157.compute-1.amazonaws.com:5432/dbd47u60jcgd3o,--dbusername=suinkegzkmwilh,--dbpassword=bd78e8b0150ba0c00146cff94fca57e5cbf0799149c42322110237aec363cbcb'	    
+				}
+				dir("test"){
+				    sh 'mvn test -Dserver.port=8085'
+				}
 			}
 		}
 
@@ -72,5 +77,5 @@ pipeline {
 			}
 		}	
 	}
-}
+}//Pipeline end
 

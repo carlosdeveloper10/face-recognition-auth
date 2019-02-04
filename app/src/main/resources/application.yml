@@ -3,10 +3,9 @@ spring:
     rest:
       base-path: /api
   datasource:
-    username: carlos
-    password: 246810
-#   url: jdbc:postgresql://my-testing-postgres.clha71iqoe17.us-east-1.rds.amazonaws.com/fra_db
-    url: jdbc:postgresql://172.18.0.2:5432/fra_db
+    username: ${dbusername:carlos}
+    password: ${dbpassword:12345678}
+    url: ${dburl:jdbc:postgresql://172.18.0.2:5432/fra_dbho}
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,4 +13,4 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
-  port: 5000
+  port: ${port:5000}
