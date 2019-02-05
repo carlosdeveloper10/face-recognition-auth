@@ -4,7 +4,7 @@ pipeline {
     }
     
     environment {
-        CI_TOOLS = '/home/ci-tools'
+        CI_TOOLS = '/home/jenkins/ci-tools'
     }
     
 	stages {
@@ -23,7 +23,7 @@ pipeline {
 				dir("app"){
 					withSonarQubeEnv('sonarQubeServer') {
 							//sh '${scannerHome}/bin/sonar-scanner'
-						sh '${CI_TOOLS}/sonnar-scanner/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner'
+						sh '${CI_TOOLS}/sonar-scanner/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner'
 					}
 					timeout(time: 1, unit: 'HOURS') {
 		            	waitForQualityGate abortPipeline: true
