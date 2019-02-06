@@ -36,6 +36,7 @@ pipeline {
 			steps {
 				dir("app"){
 					sh 'echo Creating and configuring Heroku for IT'
+					sh 'heroku create heroku-fra-it-${BUILD_NUMBER}'
 					sh 'heroku config:set port=8080 -a heroku-fra-it-${BUILD_NUMBER}'
 					sh 'heroku config:set dburl=jdbc:postgresql://ec2-174-129-224-157.compute-1.amazonaws.com:5432/dbd47u60jcgd3o -a heroku-fra-it-${BUILD_NUMBER}'
 					sh 'heroku config:set dbusername=suinkegzkmwilh -a heroku-fra-it-${BUILD_NUMBER}'
