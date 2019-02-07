@@ -22,7 +22,7 @@ public abstract class GenericIT {
 	public static void setup() {
 		String port = System.getProperty("server.port");
 		if (port == null) {
-			port = "5000";
+			port = "8080";
 		}
 		RestAssured.port = Integer.valueOf(port);
 

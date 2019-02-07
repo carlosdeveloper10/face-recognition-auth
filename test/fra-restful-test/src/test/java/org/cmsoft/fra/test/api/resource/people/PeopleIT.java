@@ -26,6 +26,7 @@ public class PeopleIT extends GenericIT {
 			.body(UtilTest.getFilesFromResource("json/people/ok-person.json"))
 			.contentType("application/json")
 		.when()
+			.log().all()
 			.post("/people")
 		.then()
 			.assertThat().statusCode(201);
