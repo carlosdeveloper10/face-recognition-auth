@@ -32,6 +32,15 @@ pipeline {
 			 }
 		}
 		
+		stage('Package artifact') {
+		   steps {
+   		   	  dir("app"){
+   		   	      sh 'mvn package -DskipTests=true'
+   		   	  }
+   		   }
+		}
+
+		
 		stage('RESTful integration test'){
 			steps {
 				dir("app"){
