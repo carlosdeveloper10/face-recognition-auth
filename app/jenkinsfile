@@ -56,7 +56,7 @@ pipeline {
 					sh 'heroku deploy:jar target/face-recognition-*.jar -a heroku-fra-it-${BUILD_NUMBER}'
 					//sh 'mvn spring-boot:run -Dspring-boot.run.arguments=--port=8085,--dburl=jdbc:postgresql://ec2-174-129-224-157.compute-1.amazonaws.com:5432/dbd47u60jcgd3o,--dbusername=suinkegzkmwilh,--dbpassword=bd78e8b0150ba0c00146cff94fca57e5cbf0799149c42322110237aec363cbcb'	    
 				}
-				dir("test"){
+				dir("test/fra-restful-test"){
 				    sh 'mvn test -Dserver.host=https://heroku-fra-it-${BUILD_NUMBER}.herokuapp.com'
 				}
 			}
