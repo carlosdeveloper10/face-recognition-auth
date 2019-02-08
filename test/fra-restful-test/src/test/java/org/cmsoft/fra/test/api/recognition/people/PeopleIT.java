@@ -29,7 +29,7 @@ public class PeopleIT extends GenericIT {
 	@Test
 	public void step2_whenPersonExistsThenApiReturn201AndFaceFeaturesFoud_1() {
 		given()
-			.body(UtilTest.getFilesFromResource("json/people/not-exist-person(CR7-face).json"))
+			.body(UtilTest.getFilesFromResource("json/people/exist-person(CR7-face).json"))
 			.contentType("application/json")
 		.when()
 		.log().all()
