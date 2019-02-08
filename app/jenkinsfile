@@ -81,6 +81,7 @@ pipeline {
 			post {
 				always {
 	    			sh 'heroku apps:destroy heroku-fra-it-${BUILD_NUMBER} --confirm heroku-fra-it-${BUILD_NUMBER}'
+	    			sh 'heroku pg:backups:restore --app heroku-fra-it-${BUILD_NUMBER} --confirm heroku-fra-it-${BUILD_NUMBER}'
 	    		}
 			}
 		}
