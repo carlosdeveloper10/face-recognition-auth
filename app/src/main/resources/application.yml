@@ -4,8 +4,8 @@ spring:
       base-path: /api
   datasource:
     username: ${dbusername:carlos}
-    password: ${dbpassword:12345678}
-    url: ${dburl:jdbc:postgresql://172.18.0.2:5432/fra_dbho}
+    password: ${dbpassword:cali1912}
+    url: ${dburl:jdbc:postgresql://my-testing-postgres.clha71iqoe17.us-east-1.rds.amazonaws.com/fra_db}
   jpa:
     hibernate:
       ddl-auto: update

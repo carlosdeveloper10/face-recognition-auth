@@ -32,19 +32,7 @@ public abstract class GenericIT {
 		}
 		RestAssured.baseURI = baseHost;
 
-//		String basePath = System.getProperty("api.resource");
-//		if (basePath == null) {
-//			basePath = "/api";
-//		}
-//		RestAssured.basePath = basePath;
-
 		RestAssured.config = RestAssuredConfig.config()
-				.httpClient(HttpClientConfig.httpClientConfig()
-			    .setParam("http.connection.timeout", 5000));
-
-	
-		//RestAssured.requestSpecification = new RequestBuilder().build().g
-	
-		//RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.);
+				.httpClient(HttpClientConfig.httpClientConfig().setParam("http.connection.timeout", 5000));
 	}
 }
