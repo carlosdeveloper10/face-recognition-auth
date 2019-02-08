@@ -13,6 +13,4 @@ public class AppConfiguration {
 	public AmazonRekognition getAwsRekognition() {
 		return AmazonRekognitionClientBuilder.defaultClient();
 	}
-	
-	
 }
