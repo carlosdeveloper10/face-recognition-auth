@@ -57,7 +57,6 @@ pipeline {
 							sh 'heroku config:set AWS_ACCES_KEY_ID=AKIAI6GVQNSBQ2UILIXQ -a heroku-fra-it-${BUILD_NUMBER}'
 							sh 'heroku config:set AWS_REGION=us-east-1 -a heroku-fra-it-${BUILD_NUMBER}'
 							sh 'heroku config:set AWS_SECRET_ACCES_KEY=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 -a heroku-fra-it-${BUILD_NUMBER}'
-							sh 'heroku deploy:jar target/face-recognition-*.jar -a heroku-fra-it-${BUILD_NUMBER}'
 							//sh 'mvn spring-boot:run -Dspring-boot.run.arguments=--port=8085,--dburl=jdbc:postgresql://ec2-174-129-224-157.compute-1.amazonaws.com:5432/dbd47u60jcgd3o,--dbusername=suinkegzkmwilh,--dbpassword=bd78e8b0150ba0c00146cff94fca57e5cbf0799149c42322110237aec363cbcb'	    
 						}
 				    }   
@@ -80,7 +79,7 @@ pipeline {
 			
 			post {
 				always {
-	    			sh 'heroku apps:destroy heroku-fra-it-${BUILD_NUMBER} --confirm heroku-fra-it-${BUILD_NUMBER}'
+	    			//sh 'heroku apps:destroy heroku-fra-it-${BUILD_NUMBER} --confirm heroku-fra-it-${BUILD_NUMBER}'
 	    			sh 'heroku pg:backups:restore --app heroku-fra-it-${BUILD_NUMBER} --confirm heroku-fra-it-${BUILD_NUMBER}'
 	    		}
 			}
