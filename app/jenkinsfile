@@ -45,7 +45,7 @@ pipeline {
 		stage('RESTful integration test'){
 		
 			environment {
-				IT_APP_NAME = 'heroku-fra-it-${BUILD_NUMBER}'    
+				IT_APP_NAME = "heroku-fra-it-${BUILD_NUMBER}" 
 			}
 
 			stages{
