@@ -76,7 +76,7 @@ pipeline {
 			post {
 				always {
 	    			dir("infrastructure/test-env/IT"){
-						sh 'terraform destroy "heroku_app_name=${IT_APP_NAME}" -auto-approve'
+						sh 'terraform destroy -var "heroku_app_name=${IT_APP_NAME}" -auto-approve'
 					}
 	    		}
 			}
