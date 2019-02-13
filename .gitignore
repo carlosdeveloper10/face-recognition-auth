@@ -6,3 +6,11 @@ mvnw
 mvnw.cmd
 target/
 .classpath
+
+### Terraform ###
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
