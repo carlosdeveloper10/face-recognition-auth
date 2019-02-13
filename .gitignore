@@ -6,6 +6,8 @@ mvnw
 mvnw.cmd
 target/
 .classpath
+.metadata/
+
 
 ### Terraform ###
 # Local .terraform directories

@@ -50,7 +50,7 @@ pipeline {
 			    	steps{
 				        dir("infrastructure/test-env/IT"){
 							sh 'terraform init'
-							sh 'terraform apply -var "heroku_app_name=${IT_APP_NAME}"'
+							sh 'terraform apply -var "heroku_app_name=${IT_APP_NAME}" -auto-approve'
 						}
 				    }   
     			}
