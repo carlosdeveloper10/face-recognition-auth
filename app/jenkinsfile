@@ -67,7 +67,7 @@ pipeline {
 			    stage('Run integartion test') {
 			       steps{
 				        dir("test/fra-restful-test"){
-				    		sh 'mvn test -Dserver.host=https://heroku-fra-it-${BUILD_NUMBER}.herokuapp.com'
+				    		sh 'mvn test -Dserver.host=https://${IT_APP_NAME}.herokuapp.com'
 						}
 				    } 
 			    }
@@ -76,7 +76,7 @@ pipeline {
 			post {
 				always {
 	    			dir("infrastructure/test-env/IT"){
-						sh 'terraform destroy -auto-approve'
+						sh 'terraform destroy "heroku_app_name=${IT_APP_NAME}" -auto-approve'
 					}
 	    		}
 			}
