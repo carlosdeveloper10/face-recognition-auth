@@ -1,57 +1,89 @@
 pipeline {
     agent {
-        label 'linux-mint'
+        label 'docker-agent'
     }
-    tools {
-        sonarQube 'sonarScanner_v330'
+    
+    environment {
+        CI_TOOLS = '/home/jenkins/ci-tools'
     }
-
-
-	environment {
-        AGENT_PATH = '/home/carlos/Documents/jenkins/agents'
-		CI_TOOLS = '/home/carlos/Documents/jenkins/ci-tools'
-    }
-
-
+    
 	stages {
-		stage('Show agent machine info and status') {
-			steps {
-			    sh 'echo list of enviromet variables'
-			    sh 'env'
-			    
-			    sh 'echo agent machine attributes'
-			    sh 'lscpu'
-			    sh 'free -h'
-			    sh 'dmesg | head -1'
-			}
-		   
-		}
-		
-		stage('Prepare to work'){
-			steps {
-    		    //The agent is provider by agent machine to avoid put the application.yml on GIT
-		    	sh 'cp ${AGENT_PATH}/project/fra/application.yml ${WORKSPACE}/src/main/resources'
-    		}
-		}
-
+	    
 	    stage('Unit test') {
-    	   steps {
-    	   		sh 'mvn test'
-    	   		junit 'target/surefire-reports/TEST-*xml'
-   	    	}
+		    steps {
+		        dir("app"){
+		        
+	    	   		sh 'mvn test'
+	    	   		junit 'target/surefire-reports/TEST-*xml'
+	   	    	}
+		    }
     	}
-
+    	
 		stage('SonarQube analysis') {
 			steps {
-				withSonarQubeEnv('sonarQubeServer') {
-					sh '${CI_TOOLS}/sonarqube-scanner/bin/sonar-scanner -Dsonar.settings'
-				}
-			
-		    }
+				dir("app"){
+					withSonarQubeEnv('sonarQubeServer') {
+							//sh '${scannerHome}/bin/sonar-scanner'
+						sh '${CI_TOOLS}/sonar-scanner/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner'
+					}
+					timeout(time: 1, unit: 'HOURS') {
+		            	waitForQualityGate abortPipeline: true
+		            }
+				 }
+			 }
 		}
 		
-		stage('Deploy on stage'){
+		stage('Package artifact') {
+		   steps {
+   		   	  dir("app"){
+   		   	      sh 'mvn package -DskipTests=true'
+   		   	  }
+   		   }
+		}
+
 		
+		stage('RESTful integration test'){
+		
+			environment {
+				IT_APP_NAME = "heroku-fra-it-${BUILD_NUMBER}" 
+			}
+
+			stages{
+			    stage('Cloud configuration') {
+			    	steps{
+				        dir("infrastructure/test-env/IT"){
+							sh 'terraform init'
+							sh 'terraform apply -var "heroku_app_name=${IT_APP_NAME}" -auto-approve'
+						}
+				    }   
+    			}
+    			stage('Deploy on heroku') {
+			       steps{
+				        dir("app"){
+							sh 'heroku deploy:jar target/face-recognition-*.jar -a heroku-fra-it-${BUILD_NUMBER}'
+						}
+				    } 
+			    }
+			    stage('Run integartion test') {
+			       steps{
+				        dir("test/fra-restful-test"){
+				    		sh 'mvn test -Dserver.host=https://${IT_APP_NAME}.herokuapp.com'
+						}
+				    } 
+			    }
+			}
+			
+			post {
+				always {
+	    			dir("infrastructure/test-env/IT"){
+	    				sh 'heroku pg:backups:restore --app it-for-fra --confirm it-for-fra'
+						sh 'terraform destroy -var "heroku_app_name=${IT_APP_NAME}" -auto-approve'
+					}
+	    		}
+			}
+		}
+
+		stage('Deploy on stage'){
 			parallel {
 			    stage('Deploy on Dev') {
                    when {
@@ -83,7 +115,7 @@ pipeline {
 				   }
                 }
 			}
-
-		}
+		}	
 	}
-}
+}//Pipeline end
+

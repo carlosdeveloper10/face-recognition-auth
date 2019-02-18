@@ -9,8 +9,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import io.restassured.response.ValidatableResponse;
-
 
 /**
  * Class for api/people IT.
@@ -22,7 +20,7 @@ import io.restassured.response.ValidatableResponse;
 public class PeopleIT extends GenericIT {
 
 	@Test
-	public void step1_whenPersonIsSavedSuccessfullThenApiReturn201() {
+	public void step1_whenPersonIsSavedSuccessfullThenApiReturn201_IT() {
 		
 		given()
 			.body(UtilTest.getFilesFromResource("json/people/ok-person.json"))
@@ -34,8 +32,7 @@ public class PeopleIT extends GenericIT {
 	}
 	
 	@Test
-	public void step2_whenPersonExistsThenApiReturn200() {
-		
+	public void step2_whenPersonExistsThenApiReturn200_IT() {
 		given()
 			.body(UtilTest.getFilesFromResource("json/people/ok-person.json"))
 			.contentType("application/json")
