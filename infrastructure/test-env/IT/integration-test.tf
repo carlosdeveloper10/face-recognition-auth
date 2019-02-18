@@ -14,8 +14,8 @@ resource "heroku_app" "integration-test" {
     dburl = "jdbc:postgresql://ec2-174-129-224-157.compute-1.amazonaws.com:5432/dbd47u60jcgd3o"
     dbusername = "suinkegzkmwilh"
     dbpassword = "bd78e8b0150ba0c00146cff94fca57e5cbf0799149c42322110237aec363cbcb"
-    AWS_ACCESS_KEY = "AKIAI6GVQNSBQ2UILIXQ"
+    AWS_ACCESS_KEY = "AKIAJ6FTA2YRTKBCCLXA"
     AWS_REGION = "us-east-1"
-    AWS_SECRET_KEY = "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"
+    AWS_SECRET_KEY = "6eT60/Aa/nOBqKnYqutnLMYtUH+lsUnjLA2I1Dop"
   }
 }
