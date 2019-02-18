@@ -76,6 +76,7 @@ pipeline {
 			post {
 				always {
 	    			dir("infrastructure/test-env/IT"){
+	    				sh 'heroku pg:backups:restore --app it-for-fra --confirm it-for-fra'
 						sh 'terraform destroy -var "heroku_app_name=${IT_APP_NAME}" -auto-approve'
 					}
 	    		}
