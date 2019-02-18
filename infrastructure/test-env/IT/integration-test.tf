@@ -16,6 +16,6 @@ resource "heroku_app" "integration-test" {
     dbpassword = "bd78e8b0150ba0c00146cff94fca57e5cbf0799149c42322110237aec363cbcb"
     AWS_ACCESS_KEY = "AKIAI6GVQNSBQ2UILIXQ"
     AWS_REGION = "us-east-1"
-    AWS_SECRET_KEY = "4Z7MZ22uiq7IohNantSASD4gRFD"
+    AWS_SECRET_KEY = "I1+4Z7MZ22uiq7IohNantSASD4gRFD/Uk7zRqlxB"
   }
 }
