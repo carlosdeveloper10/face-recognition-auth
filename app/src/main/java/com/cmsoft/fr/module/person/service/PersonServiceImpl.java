@@ -60,7 +60,7 @@ public class PersonServiceImpl implements PersonService {
 			throw new NullPointerException("The username can not be not null");
 
 		PersonEntity foundPerson = personDao.findByUsername(username);
-		return (foundPerson != null);
+		return (foundPerson == null);
 	}
 
 	/**
