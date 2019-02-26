@@ -114,13 +114,13 @@ public class PersonServiceImplTest {
 		when(personDao.findByUsername("carlos123")).thenReturn(foundPerson);
 
 		boolean existUser = personService.existUsername("carlos123");
-		assertThat(existUser).isTrue();
+		assertThat(existUser).isFalse();
 	}
 
 	@Test
 	public void whenUsernameDoesNotExistInDbThenReturnFalse() {
 
 		boolean existUser = personService.existUsername("carlos123");
-		assertThat(existUser).isFalse();
+		assertThat(existUser).isTrue();
 	}
 }
