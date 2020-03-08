@@ -35,7 +35,7 @@ public class DtoFactoryImplTest {
 		// Example: if student entity is passed, then it should return studentDto
 
 		PersonEntity personEntityToPass = new PersonEntity();
-		personEntityToPass.setId(1152440783);
+		personEntityToPass.setId("1152440783");
 		personEntityToPass.setPhotoName("carlos.png");
 		personEntityToPass.setUsername("carlos");
 

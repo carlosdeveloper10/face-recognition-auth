@@ -1,12 +1,27 @@
 package com.cmsoft.fr.module.person.service;
 
-import javax.persistence.EntityExistsException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.transcribe.model.MediaFormat;
+import com.cmsoft.fr.module.*;
 import com.cmsoft.fr.module.base.service.DtoFactory;
 import com.cmsoft.fr.module.base.service.EntityFactory;
+import com.cmsoft.fr.module.integration.notification.Notificator;
+import com.cmsoft.fr.module.integration.notification.NotificatorFactory;
+import com.cmsoft.fr.module.integration.notification.TypeNotificator;
+import com.cmsoft.fr.module.media.data.MediaDataFactory;
+import com.cmsoft.fr.module.media.data.MediaDataSource;
+import com.cmsoft.fr.module.media.data.TypeMediaData;
+import com.cmsoft.fr.module.person.controller.EntityExistsException;
 import com.cmsoft.fr.module.person.data.dao.PersonDao;
 import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 import com.cmsoft.fr.module.recognition.image.ImageUtil;
@@ -39,17 +54,20 @@ public class PersonServiceImpl implements PersonService {
 
 		PersonEntity person = (PersonEntity) entityFactory.create(personDto);
 
-		checkPersonMandatoryAttributes(person);
-		person.setPhotoName(generatePersonPhotoName(person));
+		checkPersonMandatoryAttributes(personDto);
+		person.setPhotoName(generatePersonPhotoName(personDto));
+		personDto.setPhotoName(person.getPhotoName());
 
-		if (existUsername(person.getUsername()))
-			throw new EntityExistsException("The person already exist in database");
+//		if (existUsername(person.getUsername()))
+//			throw new EntityExistsException("The person already exist in database");
 
 		PersonEntity savedPerson = personDao.save(person);
+		this.savePhotoInStorage(personDto);
+		this.notifySaving(personDto);
 		return (PersonDto) dtoFactory.create(savedPerson);
 	}
 
-	private String generatePersonPhotoName(PersonEntity person) {
+	private String generatePersonPhotoName(PersonDto person) {
 		String photoExtension = ImageUtil.getBase64ImageExtension(person.getBase64Photo());
 		return person.getUsername() + "." + photoExtension;
 	}
@@ -69,10 +87,27 @@ public class PersonServiceImpl implements PersonService {
 	 * @throws IllegalArgumentException If some mandatory attribute is illegal.
 	 * @param person
 	 */
-	private void checkPersonMandatoryAttributes(PersonEntity person) {
-		if (person.getUsername() == null || person.getUsername().isEmpty()
-				|| !ImageUtil.isBase64ImageStructureOk(person.getBase64Photo()))
+	private void checkPersonMandatoryAttributes(PersonDto person) {
+		if (person.getUsername() == null || person.getUsername().isEmpty() || person.getPhoneNumber() == null
+				|| person.getPhoneNumber().isEmpty() || !ImageUtil.isBase64ImageStructureOk(person.getBase64Photo()))
 			throw new IllegalArgumentException("Check person attributes, one or more mandatory attributes are illegal");
+
+	}
+
+	private void savePhotoInStorage(PersonDto savedPerson) {
+
+		MediaDataFactory mediaFactory = new MediaDataFactory();
+		MediaDataSource mediaSource = mediaFactory.create(TypeMediaData.AWS_S3_BASIC_BUCKET);
+		mediaSource.save(savedPerson.getBase64Photo(), savedPerson.getPhotoName(), "fra-photos");
+
+	}
+
+	private void notifySaving(PersonDto savedPerson) {
+
+		NotificatorFactory notifcatorFactory = new NotificatorFactory();
+		Notificator notificator = notifcatorFactory.create(TypeNotificator.AWS_SNS_SMS);
+		notificator.notify(savedPerson.getPhoneNumber(),
+				"Hi " + savedPerson.getUsername() + ", now you are part of -piece of cake family-");
 
 	}
 }

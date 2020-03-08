@@ -1,0 +1,70 @@
+trigger:
+  - master
+  - release/*
+  - develop
+  - feature/*
+
+phases:
+
+- phase: agents_features
+  displayName: Agents features 
+  steps:
+  - script: echo list of enviromet variables
+  - script: env
+  - script: echo agent machine attributes
+  - script: lscpu
+  - script: free -h
+  - script: dmesg | head -1
+
+- phase: unit_testing
+  displayName: Unit tests
+  steps:
+  - script: mvn test
+    displayName: Run unit test
+    workingDirectory: $(System.DefaultWorkingDirectory)/app
+  - task: PublishTestResults@2
+    displayName: Publish unit test result
+    inputs:
+      testResultsFormat: JUnit
+      testResultsFiles: '**/*.xml'
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish coverage report
+    inputs:
+      codeCoverageTool: JaCoCo
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/app/target/site/jacoco/jacoco.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/app/target/site/jacoco
+      additionalCodeCoverageFiles: $(System.DefaultWorkingDirectory)/app/target/jacoco.exec
+      
+- phase: sonarqube_analisys
+  displayName: Sonar Qube Anslysy
+  dependsOn: unit_testing
+  steps:
+  - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+    displayName: Prepare analysis on SonarCloud
+    inputs:
+      SonarCloud: fra
+      organization: carlosdeveloper10-github
+      scannerMode: CLI
+  - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/bin/sonar-scanner
+    displayName: Run sonnr analys
+    workingDirectory: app
+  - script: $(Agent.HomeDirectory)/ci-tools/sonarqube-scanner/quality-gates-checker.sh $(SonarToken) $(SonarServerName) $(System.DefaultWorkingDirectory)/.scannerwork/report-task.txt 
+    displayName: Run sonar analysis
+  - task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@4
+    displayName: 'Publish Sonar Quality gates'
+  
+- phase: publish_to_pipelines
+  displayName: Publish build artifac
+  dependsOn: sonarqube_analisys
+  condition: and(succeeded(), or(variables['Build.SourceBranch'], 'refs/heads/release/*', 'refs/heads/master', 'refs/heads/develop'))
+  steps:
+  - script: mvn package -DskipTests
+    workingDirectory: $(System.DefaultWorkingDirectory)/app
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish artifac: fra'
+    inputs:
+      PathtoPublish: 'app/target/face-recognition-1.0.0.jar'
+      ArtifactName: FRA
+  
+  
+    

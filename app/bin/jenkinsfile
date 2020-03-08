@@ -1,0 +1,122 @@
+pipeline {
+    agent {
+        label 'docker-agent'
+    }
+    
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+    }
+    
+	stages {
+	    
+	    stage('Unit test') {
+		    steps {
+		        dir("app"){
+		        
+	    	   		sh 'mvn test'
+	    	   		junit 'target/surefire-reports/TEST-*xml'
+	   	    	}
+		    }
+    	}
+    	
+		stage('SonarQube analysis') {
+			steps {
+				dir("app"){
+					withSonarQubeEnv('sonarQubeServer') {
+							//sh '${scannerHome}/bin/sonar-scanner'
+						sh '${CI_TOOLS}/sonar-scanner/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner'
+					}
+					timeout(time: 1, unit: 'HOURS') {
+		            	waitForQualityGate abortPipeline: true
+		            }
+				 }
+			 }
+		}
+		
+		stage('Package artifact') {
+		   steps {
+   		   	  dir("app"){
+   		   	      sh 'mvn package -DskipTests=true'
+   		   	  }
+   		   }
+		}
+
+		
+		stage('RESTful integration test'){
+		
+			environment {
+				IT_APP_NAME = "heroku-fra-it-${BUILD_NUMBER}" 
+			}
+
+			stages{
+			    stage('Cloud configuration') {
+			    	steps{
+				        dir("infrastructure/test-env/IT"){
+							sh 'terraform init'
+							sh 'terraform apply -var "heroku_app_name=${IT_APP_NAME}" -auto-approve'
+						}
+				    }   
+    			}
+    			stage('Deploy on heroku') {
+			       steps{
+				        dir("app"){
+							sh 'heroku deploy:jar target/face-recognition-*.jar -a heroku-fra-it-${BUILD_NUMBER}'
+						}
+				    } 
+			    }
+			    stage('Run integartion test') {
+			       steps{
+				        dir("test/fra-restful-test"){
+				    		sh 'mvn test -Dserver.host=https://${IT_APP_NAME}.herokuapp.com'
+						}
+				    } 
+			    }
+			}
+			
+			post {
+				always {
+	    			dir("infrastructure/test-env/IT"){
+	    				sh 'heroku pg:backups:restore --app it-for-fra --confirm it-for-fra'
+						sh 'terraform destroy -var "heroku_app_name=${IT_APP_NAME}" -auto-approve'
+					}
+	    		}
+			}
+		}
+
+		stage('Deploy on stage'){
+			parallel {
+			    stage('Deploy on Dev') {
+                   when {
+                       branch 'develop'
+                   }
+					steps{
+						sh 'mvn package' 
+					    sh 'eb deploy FaceRecognitionAuthDev-env'
+					}
+                }
+                
+                stage('Deploy on Qa') {
+                   when {
+                       branch 'release/*'
+                   }
+					steps{
+						sh 'mvn package' 
+						sh 'eb deploy FaceRecognitionAuthDev-qa'
+					}
+                }
+                
+                stage('Deploy on Pro') {
+                   when {
+                       branch 'master'
+                   }
+				   steps{
+				   		sh 'mvn package' 
+					    sh 'eb deploy FaceRecognitionAuthDev-pro'
+				   }
+                }
+			}
+		}	
+	}
+}//Pipeline end
+

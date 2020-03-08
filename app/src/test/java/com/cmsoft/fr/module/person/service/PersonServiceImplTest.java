@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import javax.persistence.EntityExistsException;
+
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +18,7 @@ import com.cmsoft.fr.module.base.service.DtoFactory;
 import com.cmsoft.fr.module.base.service.DtoFactoryImpl;
 import com.cmsoft.fr.module.base.service.EntityFactory;
 import com.cmsoft.fr.module.base.service.EntityFactoryImpl;
+import com.cmsoft.fr.module.person.controller.EntityExistsException;
 import com.cmsoft.fr.module.person.data.dao.PersonDao;
 import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 

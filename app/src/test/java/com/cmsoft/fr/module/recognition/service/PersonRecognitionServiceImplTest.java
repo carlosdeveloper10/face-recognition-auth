@@ -179,10 +179,8 @@ public class PersonRecognitionServiceImplTest {
 
 		List<PersonEntity> personList = new ArrayList<>();
 		PersonEntity person = new PersonEntity();
-		person.setBase64Photo(base64ImageForTest(1));
 		personList.add(person);
 		PersonEntity person2 = new PersonEntity();
-		person2.setBase64Photo(base64ImageForTest(1));
 		personList.add(person);
 
 		CompareFacesResult compareResult = new CompareFacesResult();
@@ -220,10 +218,8 @@ public class PersonRecognitionServiceImplTest {
 
 		List<PersonEntity> personList = new ArrayList<>();
 		PersonEntity person = new PersonEntity();
-		person.setBase64Photo(base64ImageForTest(1));
 		personList.add(person);
 		PersonEntity person2 = new PersonEntity();
-		person2.setBase64Photo(base64ImageForTest(1));
 		personList.add(person);
 
 		ArrayList<CompareFacesMatch> matches = new ArrayList<>();

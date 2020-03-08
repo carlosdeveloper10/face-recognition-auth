@@ -2,15 +2,15 @@ spring:
   data:
     rest:
       base-path: /api
-  datasource:
-    username: ${dbusername:carlos}
-    password: ${dbpassword:cali1912}
-    url: ${dburl:jdbc:postgresql://my-testing-postgres.clha71iqoe17.us-east-1.rds.amazonaws.com/fra_db}
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+#  datasource:
+#    username: ${dbusername:carlos}
+#    password: ${dbpassword:cali1912}
+#    url: ${dburl:jdbc:postgresql://my-testing-postgres.clha71iqoe17.us-east-1.rds.amazonaws.com/fra_db}
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: ${port:5000}

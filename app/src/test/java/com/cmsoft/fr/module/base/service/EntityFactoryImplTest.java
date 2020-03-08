@@ -20,7 +20,7 @@ public class EntityFactoryImplTest {
 		// Example: if student entity is passed, then it should return studentDto
 
 		PersonDto personDtoToPass = new PersonDto();
-		personDtoToPass.setId(1152440783);
+		personDtoToPass.setId("1152440783");
 		personDtoToPass.setPhotoName("carlos.png");
 		personDtoToPass.setUsername("carlos");
 

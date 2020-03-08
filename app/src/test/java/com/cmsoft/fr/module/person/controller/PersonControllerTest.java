@@ -5,10 +5,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.persistence.EntityExistsException;
+
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,7 +17,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -94,7 +92,7 @@ public class PersonControllerTest {
 		PersonDto personDtoReturned = new PersonDto();
 		personDtoReturned.setUsername(personDtoRequest.getUsername());
 		personDtoReturned.setPhotoName(personDtoRequest.getPhotoName());
-		personDtoReturned.setId(1);
+		personDtoReturned.setId("1");
 
 		// when(personService.save(org.mockito.ArgumentMatchers.eq(personDtoRequest))).thenReturn(personDtoReturned);
 		when(personService.save(org.mockito.ArgumentMatchers.any())).thenReturn(personDtoReturned);

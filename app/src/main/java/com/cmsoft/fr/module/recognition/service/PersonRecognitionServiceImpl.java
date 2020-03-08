@@ -16,7 +16,11 @@ import com.amazonaws.services.rekognition.model.DetectFacesRequest;
 import com.amazonaws.services.rekognition.model.DetectFacesResult;
 import com.amazonaws.services.rekognition.model.FaceDetail;
 import com.amazonaws.services.rekognition.model.Image;
+import com.amazonaws.services.rekognition.model.S3Object;
 import com.cmsoft.fr.module.base.service.DtoFactory;
+import com.cmsoft.fr.module.integration.notification.Notificator;
+import com.cmsoft.fr.module.integration.notification.NotificatorFactory;
+import com.cmsoft.fr.module.integration.notification.TypeNotificator;
 import com.cmsoft.fr.module.person.data.dao.PersonDao;
 import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 import com.cmsoft.fr.module.person.service.PersonDto;
@@ -54,7 +58,7 @@ public class PersonRecognitionServiceImpl implements RecognitionService {
 			recognitionDto.setConfidence(0.0f);
 			recognitionDto.setMinimumRequestedConfidence(requestDto.getMinimumConfidence());
 			recognitionDto.setPlusConfidence(0.0f);
-			
+
 			return recognitionDto;
 		} else if (faceDetails.size() > 1) {
 			recognitionDto.setMatchedPerson(null);
@@ -62,7 +66,7 @@ public class PersonRecognitionServiceImpl implements RecognitionService {
 			recognitionDto.setConfidence(0.0f);
 			recognitionDto.setMinimumRequestedConfidence(requestDto.getMinimumConfidence());
 			recognitionDto.setPlusConfidence(0.0f);
-			
+
 			return recognitionDto;
 		}
 
@@ -70,7 +74,7 @@ public class PersonRecognitionServiceImpl implements RecognitionService {
 	}
 
 	private RecognitionDto searchFaceByFace(FaceRecognitionRequestDto requestDto) {
-		List<PersonEntity> people = personDao.findAll();
+		List<PersonEntity> people = (List<PersonEntity>) personDao.findAll();
 
 		// Config target photo
 		String targetBase64photo = ImageUtil.getBase64ImageBody(requestDto.getBase64Image());
@@ -91,17 +95,15 @@ public class PersonRecognitionServiceImpl implements RecognitionService {
 		recognitionDto.setPlusConfidence(0.0f);
 
 		for (PersonEntity person : people) {
-			sourceBase64photo = ImageUtil.getBase64ImageBody(person.getBase64Photo());
-			decodedByteSource = Base64.getDecoder().decode(sourceBase64photo);
-			sourceImageBytes = ByteBuffer.wrap(decodedByteSource);
-			source = new Image().withBytes(sourceImageBytes);
 
-			CompareFacesRequest compareRequest = new CompareFacesRequest().withSourceImage(source)
+			CompareFacesRequest compareRequest = new CompareFacesRequest()
+					.withSourceImage(new Image()
+							.withS3Object(new S3Object().withName(person.getPhotoName()).withBucket("fra-photos")))
 					.withTargetImage(target).withSimilarityThreshold(requestDto.getMinimumConfidence());
 
 			CompareFacesResult compareFacesResult = awsRekognition.compareFaces(compareRequest);
 			List<CompareFacesMatch> faceDetails = compareFacesResult.getFaceMatches();
-			
+
 			// First one found by matching, first retrieved.
 			if (!faceDetails.isEmpty()) {
 				CompareFacesMatch matchedFace = faceDetails.get(0);
@@ -111,7 +113,8 @@ public class PersonRecognitionServiceImpl implements RecognitionService {
 				recognitionDto.setConfidence(matchedFace.getSimilarity());
 				recognitionDto.setMinimumRequestedConfidence(requestDto.getMinimumConfidence());
 				recognitionDto.setPlusConfidence(matchedFace.getSimilarity() - requestDto.getMinimumConfidence());
-				
+
+				this.notifyLogginOn(person);
 				return recognitionDto;
 			}
 		}
@@ -136,5 +139,14 @@ public class PersonRecognitionServiceImpl implements RecognitionService {
 				|| requestDto.getMinimumConfidence() > 100)
 			throw new IllegalArgumentException(
 					"Check request attributes, one or more mandatory attributes are illegal.");
+	}
+	
+	private void notifyLogginOn(PersonEntity foundPerson) {
+
+		NotificatorFactory notifcatorFactory = new NotificatorFactory();
+		Notificator notificator = notifcatorFactory.create(TypeNotificator.AWS_SNS_SMS);
+		notificator.notify(foundPerson.getPhoneNumber(),
+				"Hi " + foundPerson.getUsername() + ", you have logged on by face-recognition on -piece of cake family-.");
+
 	}
 }

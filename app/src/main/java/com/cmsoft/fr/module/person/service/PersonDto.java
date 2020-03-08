@@ -5,9 +5,11 @@ import com.cmsoft.fr.module.base.service.EntityDto;
 public class PersonDto extends EntityDto {
 
 	private String username;
-	
+
 	private String photoName;
-	
+
+	private String phoneNumber;
+
 	private String base64Photo;
 
 	public String getUsername() {
@@ -34,5 +36,12 @@ public class PersonDto extends EntityDto {
 		this.base64Photo = base64Photo;
 	}
 
-	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 }
