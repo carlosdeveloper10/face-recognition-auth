@@ -18,6 +18,14 @@ pipeline {
 	    	   		junit 'target/surefire-reports/TEST-*xml'
 	   	    	}
 		    }
+		    
+		    post {
+    		    always {
+    		        dir("app"){
+	    	   			junit 'target/surefire-reports/TEST-*xml'
+	   	    		}
+    		    }
+    		}
     	}
     	
 		stage('SonarQube analysis') {
