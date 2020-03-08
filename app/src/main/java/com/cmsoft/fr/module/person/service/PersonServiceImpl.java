@@ -1,18 +1,8 @@
 package com.cmsoft.fr.module.person.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.transcribe.model.MediaFormat;
-import com.cmsoft.fr.module.*;
 import com.cmsoft.fr.module.base.service.DtoFactory;
 import com.cmsoft.fr.module.base.service.EntityFactory;
 import com.cmsoft.fr.module.integration.notification.Notificator;
@@ -21,7 +11,7 @@ import com.cmsoft.fr.module.integration.notification.TypeNotificator;
 import com.cmsoft.fr.module.media.data.MediaDataFactory;
 import com.cmsoft.fr.module.media.data.MediaDataSource;
 import com.cmsoft.fr.module.media.data.TypeMediaData;
-import com.cmsoft.fr.module.person.controller.EntityExistsException;
+import com.cmsoft.fr.module.person.dao.EntityExistsException;
 import com.cmsoft.fr.module.person.data.dao.PersonDao;
 import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 import com.cmsoft.fr.module.recognition.image.ImageUtil;
@@ -58,8 +48,8 @@ public class PersonServiceImpl implements PersonService {
 		person.setPhotoName(generatePersonPhotoName(personDto));
 		personDto.setPhotoName(person.getPhotoName());
 
-//		if (existUsername(person.getUsername()))
-//			throw new EntityExistsException("The person already exist in database");
+		if (existUsername(person.getUsername()))
+			throw new EntityExistsException("The person already exist in database");
 
 		PersonEntity savedPerson = personDao.save(person);
 		this.savePhotoInStorage(personDto);
@@ -78,7 +68,7 @@ public class PersonServiceImpl implements PersonService {
 			throw new NullPointerException("The username can not be not null");
 
 		PersonEntity foundPerson = personDao.findByUsername(username);
-		return (foundPerson == null);
+		return (foundPerson != null);
 	}
 
 	/**

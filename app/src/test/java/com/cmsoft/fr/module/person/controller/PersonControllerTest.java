@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.cmsoft.fr.module.person.dao.EntityExistsException;
 import com.cmsoft.fr.module.person.service.PersonDto;
 import com.cmsoft.fr.module.person.service.PersonService;
 import com.cmsoft.fr.util.TestUtil;

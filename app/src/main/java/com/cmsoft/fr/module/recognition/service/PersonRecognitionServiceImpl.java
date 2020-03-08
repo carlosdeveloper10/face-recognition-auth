@@ -145,8 +145,13 @@ public class PersonRecognitionServiceImpl implements RecognitionService {
 
 		NotificatorFactory notifcatorFactory = new NotificatorFactory();
 		Notificator notificator = notifcatorFactory.create(TypeNotificator.AWS_SNS_SMS);
+		
+		try {
 		notificator.notify(foundPerson.getPhoneNumber(),
 				"Hi " + foundPerson.getUsername() + ", you have logged on by face-recognition on -piece of cake family-.");
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 
 	}
 }

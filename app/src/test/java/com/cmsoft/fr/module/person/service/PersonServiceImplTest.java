@@ -18,7 +18,7 @@ import com.cmsoft.fr.module.base.service.DtoFactory;
 import com.cmsoft.fr.module.base.service.DtoFactoryImpl;
 import com.cmsoft.fr.module.base.service.EntityFactory;
 import com.cmsoft.fr.module.base.service.EntityFactoryImpl;
-import com.cmsoft.fr.module.person.controller.EntityExistsException;
+import com.cmsoft.fr.module.person.dao.EntityExistsException;
 import com.cmsoft.fr.module.person.data.dao.PersonDao;
 import com.cmsoft.fr.module.person.data.entity.PersonEntity;
 
@@ -62,6 +62,7 @@ public class PersonServiceImplTest {
 
 		PersonDto personToSave = new PersonDto();
 		personToSave.setUsername("carlos123");
+		personToSave.setPhoneNumber("+573146678835");
 		personToSave.setBase64Photo("data:image/jpeg;base64,hdkasjdfajgdfkugewuirakjdafgkfdgjdf");
 
 		PersonEntity person = new PersonEntity();
@@ -77,9 +78,12 @@ public class PersonServiceImplTest {
 	public void whenPersonUsernameDoesNotExistThenSaveThePersonAndReturnTheSavePerson() {
 		PersonDto personDtoToSave = new PersonDto();
 		personDtoToSave.setUsername("carlos_mario");
+		personDtoToSave.setPhoneNumber("+573148698841");
 		personDtoToSave.setBase64Photo("data:image/jpeg;base64,hdkasjdfajgdfkugewuirakjdafgkfdgjdf");
 
-		PersonDto exceptedSavedPersonDto = personDtoToSave;
+		PersonDto exceptedSavedPersonDto = new PersonDto();
+		exceptedSavedPersonDto.setUsername("carlos_mario");
+		exceptedSavedPersonDto.setPhoneNumber("+573148698841");
 		exceptedSavedPersonDto.setPhotoName("carlos_mario.jpeg");
 
 		EntityFactory entityFactoryy = new EntityFactoryImpl();
@@ -115,13 +119,13 @@ public class PersonServiceImplTest {
 		when(personDao.findByUsername("carlos123")).thenReturn(foundPerson);
 
 		boolean existUser = personService.existUsername("carlos123");
-		assertThat(existUser).isFalse();
+		assertThat(existUser).isTrue();
 	}
 
 	@Test
 	public void whenUsernameDoesNotExistInDbThenReturnFalse() {
 
 		boolean existUser = personService.existUsername("carlos123");
-		assertThat(existUser).isTrue();
+		assertThat(existUser).isFalse();
 	}
 }

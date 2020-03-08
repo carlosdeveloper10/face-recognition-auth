@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cmsoft.fr.module.base.controller.Response;
+import com.cmsoft.fr.module.person.dao.EntityExistsException;
 import com.cmsoft.fr.module.person.service.PersonDto;
 import com.cmsoft.fr.module.person.service.PersonService;
 
@@ -41,9 +42,9 @@ public class PersonController {
 			response.setMessage(
 					"Some mandatories person attributes are missing. Check api documetation for POST:/person");
 			response.setHttpStatusCode(HttpServletResponse.SC_OK);
-//		} catch (EntityExistsException e) {
-//			response.setMessage("The username is already registered. Try with other one");
-//			response.setHttpStatusCode(HttpServletResponse.SC_OK);
+		} catch (EntityExistsException e) {
+			response.setMessage("The username is already registered. Try with other one");
+			response.setHttpStatusCode(HttpServletResponse.SC_OK);
 		} catch (Exception e) {
 			response.setMessage("An error has occurred, we are working to solve it.");
 			response.setHttpStatusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
