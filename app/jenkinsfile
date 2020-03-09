@@ -31,7 +31,7 @@ pipeline {
 				dir("app"){
 					withSonarQubeEnv('sonarQubeServer') {
 							//sh '${scannerHome}/bin/sonar-scanner'
-						sh '${CI_TOOLS}/sonar-scanner/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner'
+						sh '/home/jenkins/ci-tools/sonar-scanner/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner'
 					}
 					timeout(time: 1, unit: 'HOURS') {
 		            	waitForQualityGate abortPipeline: true
