@@ -86,22 +86,23 @@ public class PersonServiceImpl implements PersonService {
 
 	private void savePhotoInStorage(PersonDto savedPerson) {
 
-	try {
+		try {
 			MediaDataFactory mediaFactory = new MediaDataFactory();
 			MediaDataSource mediaSource = mediaFactory.create(TypeMediaData.AWS_S3_BASIC_BUCKET);
 			mediaSource.save(savedPerson.getBase64Photo(), savedPerson.getPhotoName(), "fra-photos");
-	} catch (Exception e) {
-	}	
-		
+		} catch (Exception e) {
+		}
 
 	}
 
 	private void notifySaving(PersonDto savedPerson) {
-
-		NotificatorFactory notifcatorFactory = new NotificatorFactory();
-		Notificator notificator = notifcatorFactory.create(TypeNotificator.AWS_SNS_SMS);
-		notificator.notify(savedPerson.getPhoneNumber(),
-				"Hi " + savedPerson.getUsername() + ", now you are part of -piece of cake family-");
+		try {
+			NotificatorFactory notifcatorFactory = new NotificatorFactory();
+			Notificator notificator = notifcatorFactory.create(TypeNotificator.AWS_SNS_SMS);
+			notificator.notify(savedPerson.getPhoneNumber(),
+					"Hi " + savedPerson.getUsername() + ", now you are part of -piece of cake family-");
+		} catch (Exception e) {
+		}
 
 	}
 }
