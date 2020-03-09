@@ -86,9 +86,13 @@ public class PersonServiceImpl implements PersonService {
 
 	private void savePhotoInStorage(PersonDto savedPerson) {
 
-		MediaDataFactory mediaFactory = new MediaDataFactory();
-		MediaDataSource mediaSource = mediaFactory.create(TypeMediaData.AWS_S3_BASIC_BUCKET);
-		mediaSource.save(savedPerson.getBase64Photo(), savedPerson.getPhotoName(), "fra-photos");
+	try {
+			MediaDataFactory mediaFactory = new MediaDataFactory();
+			MediaDataSource mediaSource = mediaFactory.create(TypeMediaData.AWS_S3_BASIC_BUCKET);
+			mediaSource.save(savedPerson.getBase64Photo(), savedPerson.getPhotoName(), "fra-photos");
+	} catch (Exception e) {
+	}	
+		
 
 	}
 

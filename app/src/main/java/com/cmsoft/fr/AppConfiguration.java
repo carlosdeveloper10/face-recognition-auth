@@ -24,7 +24,7 @@ public class AppConfiguration {
 	public AmazonDynamoDB getAwsDynamoDb() {
 		return AmazonDynamoDBClientBuilder.defaultClient();
 	}
-	
+
 	@Bean(name = "amazonS3")
 	public AmazonS3 getAwsS3() {
 		return AmazonS3ClientBuilder.defaultClient();
