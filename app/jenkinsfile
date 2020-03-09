@@ -51,6 +51,11 @@ pipeline {
 		
 		stage('RESTful integration test'){
 		
+		
+			when {
+             	branch 'release/*'
+            }
+		
 			environment {
 				IT_APP_NAME = "heroku-fra-it-${BUILD_NUMBER}" 
 			}
@@ -98,7 +103,7 @@ pipeline {
                    }
 					steps{
 						sh 'mvn package' 
-					    sh 'eb deploy FaceRecognitionAuthDev-env'
+					    sh 'eb deploy FraDev-env-1'
 					}
                 }
                 
@@ -108,7 +113,7 @@ pipeline {
                    }
 					steps{
 						sh 'mvn package' 
-						sh 'eb deploy FaceRecognitionAuthDev-qa'
+						//sh 'eb deploy FaceRecognitionAuthDev-qa'
 					}
                 }
                 
@@ -118,7 +123,7 @@ pipeline {
                    }
 				   steps{
 				   		sh 'mvn package' 
-					    sh 'eb deploy FaceRecognitionAuthDev-pro'
+					    //sh 'eb deploy FaceRecognitionAuthDev-pro'
 				   }
                 }
 			}
