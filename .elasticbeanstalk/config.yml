@@ -5,7 +5,7 @@ branch-defaults:
 deploy:
   artifact: target/face-recognition-1.0.0.jar
 global:
-  application_name: face-recognition-auth-dev
+  application_name: FraDev-env-1
   branch: null
   default_ec2_keyname: null
   default_platform: Java 8

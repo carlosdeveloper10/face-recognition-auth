@@ -27,6 +27,6 @@ public class AppConfiguration {
 
 	@Bean(name = "amazonS3")
 	public AmazonS3 getAwsS3() {
-		return AmazonS3ClientBuilder.defaultClient();
+		return AmazonS3ClientBuilder.standard().withClientConfiguration(accelerateModeEnabled)
 	}
 }
